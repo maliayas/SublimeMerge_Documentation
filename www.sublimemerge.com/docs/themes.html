@@ -1,0 +1,3195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Themes – Sublime Merge Documentation</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=480, user-scalable=yes">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i|Roboto+Mono:400,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../merge_v2.css">
+    <link rel="icon" href="https://www.sublimemerge.com/favicon.ico">
+    <link rel="icon" size="64x64" href="https://www.sublimemerge.com/favicon.ico">
+    <script type="text/javascript">
+    var plat = 'windows'
+    if (/Mac OS X/.test(navigator.userAgent))
+        plat = 'osx'
+    else if (/Linux|FreeBSD/.test(navigator.userAgent))
+        plat = 'linux'
+    var arch = /WOW64|Win64|x86_64/.test(navigator.userAgent) ? '64' : '32'
+    document.documentElement.className += ' plat_' + plat + ' arch_' + arch
+    function byid(x)
+    {
+        return document.getElementById(x)
+    }
+    var scale = 1
+    function res()
+    {
+        scale = window.devicePixelRatio >= 1.3 && document.body.clientWidth > 1024 ? 2 : 1
+        return scale == 2 ? '@2x' : ''
+    }
+    </script>
+    <!--[if lt IE 9]>
+    <script>
+        var els = ['header', 'nav', 'section', 'main', 'article', 'aside', 'footer']
+        for (var i = 0; i < els.length; ++i)
+            document.createElement(els[i]);
+    </script>
+    <style>
+        header, nav, section, main, article, aside, footer {
+            display: block;
+        }
+    </style>
+    <![endif]-->
+</head>
+<body class="docs">
+    <header>
+        <section>
+            <a id="logo" href="https://www.sublimemerge.com/">
+                <img src="../images/logo.svg" alt="Sublime Merge">
+            </a>
+            <nav>
+                <a href="https://www.sublimemerge.com/download">Download</a>
+                <a href="https://www.sublimehq.com/store">Buy</a>
+                <a href="https://www.sublimemerge.com/support">Support</a>
+                <span class="vr"></span>
+                <a href="https://www.sublimetext.com/blog/">News</a>
+                <a href="https://forum.sublimetext.com">Forum</a>
+            </nav>
+        </section>
+    </header>
+    <main>
+    <section>
+    <script src="prism.js"></script>
+
+    <h1><span>
+        <a href="index.html">Documentation</a>
+        Themes
+    </span></h1>
+
+    <div class="primary">
+    <section>
+        <p>
+            The look of the Sublime Merge interface is controlled by themes. The
+            term <em>theme</em> refers strictly to the look of the UI –
+            buttons, the commit list, location bar, command palette and so
+            forth. The highlighting of diffs is controlled by a combination of
+            <a href="https://www.sublimetext.com/docs/3/color_schemes.html">color
+            schemes</a> and syntax definitions.
+        </p>
+
+        <p>
+            The theme engine for Sublime Merge is based on raster graphics.
+            PNGs are used to prevent texture degradation and provide full
+            alpha control. Each element in the UI can have up to four layers
+            of textures or fills applied, with properties to control opacity
+            and padding. The properties set on each element can be
+            conditionally changed based on user interaction and settings.
+        </p>
+
+        <p>
+            Sublime Merge themes are implemented via the
+            <span class="file">.sublime-theme</span> format. It is a JSON format
+            that specifies rules for matching elements and modifying their
+            appearance.
+        </p>
+
+        <ul>
+            <li><a href="themes.html#example">Example</a></li>
+            <li><a href="themes.html#terminology">Terminology</a></li>
+            <li><a href="themes.html#general_information">General Information</a></li>
+            <li><a href="themes.html#variables">Variables</a></li>
+            <li><a href="themes.html#color-values">Colors</a></li>
+            <li><a href="themes.html#attributes">Attributes</a></li>
+            <li><a href="themes.html#settings">Settings</a></li>
+            <li><a href="themes.html#properties">Properties</a></li>
+            <li><a href="themes.html#elements">Elements</a></li>
+            <li><a href="themes.html#customization">Customization</a></li>
+        </ul>
+    </section>
+
+
+    <section>
+        <h2 id="example">Example</h2>
+
+        <p>
+            <em>The following is an example of the format of a
+            <span class="file">.sublime-theme</span> file. A complete theme will
+            have many more rules to cover all elements used in the UI.</em>
+        </p>
+
+        <pre><code class="language-js">{
+    "variables":
+    {
+        "light_gray": "rgb(240, 240, 240)"
+    },
+    "rules":
+    [
+        // Set up the textures for a button
+        {
+            "class": "button_control",
+            "layer0.tint": "#000",
+            "layer0.opacity": 1.0,
+            "layer1.texture": "Theme - Example/textures/button_background.png",
+            "layer1.inner_margin": 4,
+            "layer1.opacity": 1.0,
+            "layer2.texture": "Theme - Example/textures/button_highlight.png",
+            "layer2.inner_margin": 4,
+            "layer2.opacity": 0.0,
+            "content_margin": [4, 8, 4, 8]
+        },
+        // Show the highlight texture when the button is hovered
+        {
+            "class": "button_control",
+            "attributes": ["hover"],
+            "layer2.opacity": 1.0
+        },
+        // Basic text label style
+        {
+            "class": "label_control",
+            "fg": "var(light_gray)",
+            "font.bold": true
+        },
+        // Brighten labels contained in a button on hover
+        {
+            "class": "label_control",
+            "parents": [{"class": "button_control", "attributes": ["hover"]}],
+            "fg": "white"
+        }
+    ]
+}</code></pre>
+    </section>
+
+    <section>
+        <h2 id="terminology">Terminology</h2>
+
+        <p>
+            A theme is a JSON object that specifies <em>rules</em> and,
+            optionally, <em>variables</em>. Each <em>rule</em> object contains a
+            <code>class</code> key used to match to an element. In addition to
+            the <code>class</code>, matching can be further restricted by
+            specifying <code>attributes</code>, <code>settings</code>,
+            <code>parents</code> and <code>platforms</code> keys.
+            <em>Properties</em> affect the look or behavior of the element.
+        </p>
+
+        <p>
+            <em>Variables</em> allow reusing values throughout different
+            <em>rules</em>. Variables may contain any type of syntax, but may
+            only be referenced by top-level keys in a <em>rule</em>.
+        </p>
+
+        <p>
+            Most elements have a single class name, although a few have more
+            than one to allow for both generic, and specific styling. For
+            example, the <code>expand_all_diff_control</code> class can be used
+            to set styles for the expand all button, however
+            <code>expand_all_diff_control untracked</code> may be used to
+            target just the expand all button for untracked files. Multiple
+            <code>class</code> values are separated by a space. When a rule
+            specified multiple class names, all must be present on the element
+            for the rule to be applied.
+        </p>
+
+        <p>
+            <code>attributes</code> are set by Sublime Merge, and indicate the
+            state of user interaction, or other information about the nature of
+            an element. The value is an array of strings. Examples include
+            <code>"hover"</code>, <code>"pressed"</code> and
+            <code>"highlighted"</code>.
+        </p>
+
+        <p>
+            <code>settings</code> are user-controlled values that can be
+            changed at run-time. The value is an array of strings which are
+            the names of boolean settings pulled from
+            <code>.sublime-settings</code> files. To check for a
+            <code>false</code> value, prefix the setting name with a
+            <code>!</code> Themes may also create their own settings to
+            allow users to change the style.
+        </p>
+
+        <p>
+            The <code>parents</code> key is an array of objects specifying
+            the <code>class</code> and <code>attributes</code> that must
+            be matched in a parent element.
+        </p>
+
+        <p>
+            The <code>platforms</code> key is an array of strings
+            specifying the what operating systems to apply the rule to.
+            Valid options include <code>"osx"</code>, <code>"windows"</code>,
+            and <code>"linux"</code>.
+        </p>
+
+        <p>
+            <em>Properties</em> refer to all other keys in the JSON objects.
+            Some properties are available on all elements, while others
+            are specific to an individual element.
+        </p>
+    </section>
+
+    <section>
+        <h2 id="general_information">General Information</h2>
+
+        <p>
+            The follow sections discuss information about images and how to
+            specify styles.
+        </p>
+
+        <h3>Specificity</h3>
+        <p>
+            Unlike CSS, a Sublime Merge theme does not do specificity
+            matching when applying rules to elements. All rules are tested,
+            in order, against each element. Subsequent rules that match
+            will override properties from previous rules.
+        </p>
+
+        <h3>Texture Images</h3>
+        <p>
+            All textures in a theme are specified using PNG images. Each
+            texture should be saved at "normal" DPI, where each pixel in the
+            file will be mapped to one device pixel. All file paths in the
+            theme definition should reference the normal DPI version.
+        </p>
+
+        <p>
+            A second version of each texture should also be included at
+            double the DPI, with <code>@2x</code> added to the filename right
+            before the extension. Sublime Merge will automatically use the
+            <code>@2x</code> version when being displayed on a high-DPI screen.
+            It is also possible to specify <code>@3x</code> variants of
+            textures for screens running at 300% scale or higher.
+        </p>
+
+        <p>
+            <em>SVG images are not currently supported.</em>
+        </p>
+
+        <h3 id="dimensions">Dimensions</h3>
+
+        <p>
+            Integer units in a theme referring to dimensions are always
+            specified in device-independent pixels (DIP). Sublime Merge
+            automatically handles scaling UI elements based on the screen
+            density.
+        </p>
+
+        <h3 id="padding_margin">Padding &amp; Margins</h3>
+
+        <p>
+            Padding and margin may be specified in one of three ways:
+        </p>
+
+        <ul>
+            <li>
+                A single integer value – the same value is applied to
+                the left, top, right and bottom
+            </li>
+            <li>
+                An array of two integers – the first value is applied
+                to the left and top, while the second value is applied
+                to the right and bottom
+            </li>
+            <li>
+                An array of four integers – the values are applied, in
+                order, to the left, top, right and bottom
+            </li>
+        </ul>
+    </section>
+
+    <section>
+        <h2 id="variables">Variables</h2>
+
+        <p>
+            Reusable variables may be defined by a JSON object under the
+            top-level key <code>"variables"</code>. Variable names are strings,
+            however the value may be a string, number, boolean, array or object.
+            Using a variable requires specifying a string in the format
+            <code>var(example_variable_name)</code>.
+        </p>
+
+            <pre><code class="language-js">{
+    "variables":
+    {
+        "light_gray": "rgb(240, 240, 240)"
+    },
+    "rules":
+    [
+        {
+            "class": "label_control",
+            "fg": "var(light_gray)"
+        }
+    ]
+}</code></pre>
+
+        <p>
+            Variables may be used as the value for any
+            <a href="themes.html#properties">property</a>, but the variable must be the
+            entire value, it may not be embedded within another variable. The
+            only exception to this rule is that variables may be used as the
+            base color for the CSS <code>color()</code> mod function.
+        </p>
+
+    </section>
+
+    <section>
+        <h2 id="color_values">Colors</h2>
+
+        <p>
+            Colors in themes may now be specified using CSS syntax, as supported
+            by <a href="minihtml.html">minihtml</a>. This includes
+            support for hex, <code>rgb()</code>, <code>hsl()</code>, variables
+            and the color mod function. Additionally, all
+            <a href="minihtml.html#predefined_variables">predefined
+            variables</a> that are derived from the color scheme are available
+            for use.
+        </p>
+
+        <p>
+            <em>The color white, as hex</em>
+        </p>
+
+        <pre><code class="language-css">#fff</code></pre>
+
+        <p>
+            <em>The color white, using <code>rgb()</code> functional notation</em>
+        </p>
+
+        <pre><code class="language-css">rgb(255, 255, 255)</code></pre>
+
+        <p>
+            <em>50% opacity white, using <code>hsla()</code> functional notation</em>
+        </p>
+
+        <pre><code class="language-css">hsla(0, 100%, 100%, 0.5)</code></pre>
+
+        <p>
+            <em>The closest color to red, as defined in the color scheme</em>
+        </p>
+
+        <pre><code class="language-css">var(--redish)</code></pre>
+
+        <p>
+            <em>50% opacity of the closest color to red, as defined in the color scheme</em>
+        </p>
+
+        <pre><code class="language-css">color(var(--redish) a(0.5))</code></pre>
+
+        <p>
+            Colors derived from the color scheme will always be based
+            on the color scheme defined in
+            <span class="file">Diff.sublime-settings</span>.
+        </p>
+    </section>
+
+    <section>
+        <h2 id="attributes">Attributes</h2>
+
+        <p>
+            Attributes are specified as an array of strings. Each string
+            is an attribute name. To check for the absence of an
+            attribute, prepend a <code>!</code> to the name.
+        </p>
+
+        <p>
+            The following attributes are common to all elements:
+        </p>
+
+        <dl class="enum attributes">
+            <dt>hover</dt>
+            <dd>
+                set whenever the user's mouse is hovered over an element
+            </dd>
+        </dl>
+
+        <h3 id="luminosity_attributes">Luminosity</h3>
+
+        <p>
+            Although not available on all elements, many have attributes set
+            based on the approximate luminosity of the current color scheme.
+            Most elements have the attributes set based on the global color
+            scheme. Tabs and the tab background, however, have the attributes
+            based on the color scheme specific to the selected view.
+        </p>
+
+        <p>
+            The attributes are assigned based on the <code>V</code> value of
+            the background color, when represented as
+            <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">HSV</a>
+            colors.
+        </p>
+
+        <dl class="enum attributes">
+            <dt>file_light</dt>
+            <dd><code>V</code> from <code>0.60-1.00</code></dd>
+            <dt>file_medium</dt>
+            <dd><code>V</code> from <code>0.30-0.59</code></dd>
+            <dt>file_medium_dark</dt>
+            <dd><code>V</code> from <code>0.10-0.29</code></dd>
+            <dt>file_dark</dt>
+            <dd><code>V</code> from <code>0.00-0.09</code></dd>
+        </dl>
+    </section>
+
+    <section>
+        <h2 id="settings">Settings</h2>
+
+        <p>
+            Certain Sublime Merge settings are design to influence the UI.
+            Themes should respect these settings and change elements based on
+            them.
+        </p>
+
+        <dl class="enum settings">
+            <dt>overlay_scroll_bars</dt>
+            <dd>
+                this should affect the style of the scroll bars – generally
+                they should be semi-transparent and the <code>overlay</code>
+                property of the <code>scroll_area_control</code> should be
+                set to <code>true</code>
+            </dd>
+        </dl>
+    </section>
+
+    <section>
+        <h2 id="properties">Properties</h2>
+
+        <p>
+            The <code>"rules"</code> key of a <code>.sublime-theme</code> file
+            is a JSON array of of objects describing how UI elements should be
+            styled.
+        </p>
+
+        <h3 id="layer_properties">Layer Properties</h3>
+
+        <p>
+            Many elements in the UI support up to four texture layers for
+            displaying fill colors and raster graphics.
+        </p>
+
+        <dl class="enum properties">
+            <dt>layer0.<em>*</em></dt>
+            <dd>
+                the bottom-most texture
+                <a href="themes.html#layer_properties">layer</a> for the element
+            </dd>
+            <dt>layer1.<em>*</em></dt>
+            <dd>
+                the second texture
+                <a href="themes.html#layer_properties">layer</a> for the element
+            </dd>
+            <dt>layer2.<em>*</em></dt>
+            <dd>
+                the third texture
+                <a href="themes.html#layer_properties">layer</a> for the element
+            </dd>
+            <dt>layer3.<em>*</em></dt>
+            <dd>
+                the fourth texture
+                <a href="themes.html#layer_properties">layer</a> for the element
+            </dd>
+            <dt>hit_test_level</dt>
+            <dd>
+                a float value setting the required opacity
+                of a pixel for a click to be considering a "hit"
+            </dd>
+            <dt>content_margin</dt>
+            <dd>
+                the <a href="themes.html#padding_margin">margin</a> around the contents
+            </dd>
+        </dl>
+
+        <p>
+            Each layer has dotted sub-keys in the format
+            <code>layer<em>#</em>.<em>sub-key</em></code>. Valid sub-keys
+            include:
+        </p>
+
+        <dl class="enum properties">
+            <dt><em>layer#.</em>opacity</dt>
+            <dd>
+                <p>
+                    a float value from <code>0.0</code> to <code>1.0</code> that
+                    controls the master opacity of the layer.
+                </p>
+                <div class="example">
+                    Example: <code>0.9</code>
+                </div>
+            </dd>
+            <dt><em>layer#.</em>tint</dt>
+            <dd>
+                <p>
+                    a <a href="themes.html#color_values">color
+                    value</a> of a fill color to apply to the layer.
+                </p>
+                <div class="example">
+                    Example: <code>[255, 0, 0, 127]</code>
+                </div>
+            </dd>
+            <dt><em>layer#.</em>texture</dt>
+            <dd>
+                <p>
+                    a string of the file path to a PNG
+                    image, relative to the <code>Packages/</code> folder.
+                </p>
+                <div class="example">
+                    Example: <code>"Theme - Merge/button.png"</code>
+                </div>
+            </dd> 
+            <dt><em>layer#.</em>inner_margin</dt>
+            <dd>
+                <p>
+                    texture images are stretched to fit the element by slicing
+                    into a grid of 9 using four lines. See
+                    <a href="themes.html#padding_margin">padding &amp; margins</a> for valid
+                    formats with which to specify the margin used to make the
+                    slices.
+                </p>
+                <div class="example">
+                    Example: <code>[5, 2, 5, 2]</code>
+                </div>
+            </dd>
+            <dt><em>layer#.</em>draw_center</dt>
+            <dd>
+                <p>
+                    a boolean that controls if the center rectangle of the
+                    9-grid created via <code><em>layer#.</em>inner_margin</code>
+                    should be drawn. This is an optimization that allows skipping
+                    an unused section of texture.
+                </p>
+                <div class="example">
+                    Example: <code>false</code>
+                </div>
+            </dd>
+            <dt><em>layer#.</em>repeat</dt>
+            <dd>
+                <p>
+                    a boolean that controls if the
+                    texture should be repeated instead of stretched.
+                </p>
+                <div class="example">
+                    Example: <code>false</code>
+                </div>
+            </dd>
+        </dl>
+
+        <h4>Value Animation</h4>
+
+        <p>
+            Properties specified by floats may be animated over time. Instead of
+            providing a single numeric value, the animation is specified with an
+            object including details of the animation. <em>Value animation is
+            primarily useful for changing opacity over time.</em> The object keys
+            are:
+        </p>
+
+        <dl class="enum properties">
+            <dt>target</dt>
+            <dd>
+                <p>
+                    a float value from <code>0.0</code>
+                    to <code>1.0</code> that controls the destination value
+                </p>
+                <div class="example">
+                    Example: <code>1.0</code>
+                </div>
+            </dd>
+            <dt>speed</dt>
+            <dd>
+                <p>
+                    a float value of <code>1.0</code> or greater that
+                    controls the relative length of time the animation takes
+                </p>
+                <div class="example">
+                    Example: <code>1.5</code>
+                </div>
+            </dd>
+            <dt>interpolation</dt>
+            <dd>
+                <p>
+                    an optional string that allow specifying the use of
+                    <code>smoothstep</code> function instead of the default
+                    linear function.
+                </p>
+                <div class="example">
+                    Default: <code>"linear"</code><br>
+                    Example: <code>"smoothstep"</code>
+                </div>
+            </dd>
+        </dl>
+
+        <h4>Texture Animation</h4>
+
+        <p>
+            The <code><em>layer#.</em>texture</code> sub-key may be an object to
+            specify an animation based on two or more PNG images. The object keys are:
+        </p>
+
+        <dl class="enum properties">
+            <dt>keyframes</dt>
+            <dd>
+                <p>
+                    an array of strings of the paths to PNG images,
+                    in order
+                </p>
+                <div class="example">
+                    Example: <code>["Theme - Merge/spinner.png",
+                    "Theme - Merge/spinner1.png"]</code>
+                </div>
+            </dd>
+            <dt>loop</dt>
+            <dd>
+                <p>
+                    an optional boolean that controls if the animation
+                    should repeat
+                </p>
+                <div class="example">
+                    Default: <code>false</code><br>
+                    Example: <code>true</code>
+                </div>
+            </dd>
+            <dt>frame_time</dt>
+            <dd>
+                <p>
+                    an optional float specifying how long each
+                    frame should be displayed. <code>1.0</code> represents 1 second.
+                </p>
+                <div class="example">
+                    Default: <code>0.0333</code> (30 fps)<br>
+                    Example: <code>0.0166</code> (60 fps)
+                </div>
+            </dd>
+        </dl>
+
+        <h3 id="texture_tinting_properties">Texture Tinting Properties</h3>
+
+        <p>
+            Certain elements have an available tint value set by the background
+            of current color scheme. The tint can be modified and applied to a
+            <code>layer<em>#</em>.texture</code> image.
+        </p>
+
+        <dl class="enum properties">
+            <dt>tint_index</dt>
+            <dd>
+                <p>
+                    Controls which layer the tint is applied to.
+                    Must be an integer from <code>0</code> to <code>3</code>.
+                </p>
+            </dd>
+            <dt>tint_modifier</dt>
+            <dd>
+                <p>
+                    An array of four integers in the range <code>0</code> to
+                    <code>255</code>. The first three are blended into the
+                    RGB values from the tint color with the fourth value
+                    specifying how much of these RGB modifier values to apply.
+                </p>
+            </dd>
+        </dl>
+
+        <h3 id="spacing_properties">Spacing Properties</h3>
+
+        <p>
+            Some controls exist to control the layout of elements in a
+            horizontal or vertical line. They support the properties:
+        </p>
+
+        <dl class="enum properties">
+            <dt>spacing</dt>
+            <dd>
+                an integer specifying the spacing between elements
+            </dd>
+        </dl>
+
+        <h3 id="minimum_size_properties">Minimum Size Properties</h3>
+
+        <p>
+            Some container controls allow specifying a minimum size, for the
+            sake of aligning controls. They support the properties:
+        </p>
+
+        <dl class="enum properties">
+            <dt>min_size</dt>
+            <dd>
+                a two-element array of integers, specifying the minimum width
+                and height
+            </dd>
+        </dl>
+
+        <h3 id="font_properties">Font Properties</h3>
+
+        <p>
+            Certain textual elements allow setting the following font properties:
+        </p>
+
+        <dl class="enum properties">
+            <dt>font.face</dt>
+            <dd>
+                the name of the font face
+            </dd>
+            <dt>font.size</dt>
+            <dd>
+                an integer point size
+            </dd>
+            <dt>font.bold</dt>
+            <dd>
+                a boolean, if the font should be bold
+            </dd>
+            <dt>font.italic</dt>
+            <dd>
+                a boolean, if the font should be italic
+            </dd>
+        </dl>
+
+        <h3 id="shadow_properties">Shadow Properties</h3>
+
+        <p>
+            Some text elements allow setting the following properties:
+        </p>
+
+        <dl class="enum properties">
+            <dt>shadow_color</dt>
+            <dd>
+                a <a href="themes.html#color_values">color
+                value</a> to use for the text shadow
+            </dd>
+            <dt>shadow_offset</dt>
+            <dd>
+                a 2-element array containing the X and Y offsets of
+                the shadow
+            </dd>
+        </dl>
+
+        <h3 id="filter_label_properties">Filter Label Properties</h3>
+
+        <p>
+            Labels used in the quick panel have color control based
+            on selection and matching
+        </p>
+
+        <dl class="enum properties">
+            <dt>fg</dt>
+            <dd>
+                a <a href="themes.html#color_values">color value</a> for
+                unselected, unmatched text
+            </dd>
+            <dt>match_fg</dt>
+            <dd>
+                a <a href="themes.html#color_values">color
+                value</a> for unselected, matched text
+            </dd>
+            <dt>bg</dt>
+            <dd>
+                a <a href="themes.html#color_values">color value</a> for
+                the background of an unselected row
+            </dd>
+            <dt>selected_fg</dt>
+            <dd>
+                a <a href="themes.html#color_values">color
+                value</a> for selected, unmatched text
+            </dd>
+            <dt>selected_match_fg</dt>
+            <dd>
+                a <a href="themes.html#color_values">color
+                value</a> for selected, matched text
+            </dd>
+            <dt>bg</dt>
+            <dd>
+                a <a href="themes.html#color_values">color value</a> for
+                the background of a selected row
+            </dd>
+            <dt>font.face</dt>
+            <dd>
+                the name of the font face
+            </dd>
+            <dt>font.size</dt>
+            <dd>
+                an integer point size
+            </dd>
+        </dl>
+
+        <h3 id="data_table_properties">Data Table Properties</h3>
+
+        <p>
+            Row-based tables of data provide the following properties:
+        </p>
+
+        <dl class="enum properties">
+            <dt>dark_content</dt>
+            <dd>
+                if the background is dark – used
+                to set the <code>dark</code> attribute for scrollbars
+            </dd>
+            <dt>row_padding</dt>
+            <dd>
+                padding added to each row, in
+                one of the formats described in
+                <a href="themes.html#padding_margin">padding &amp; margins</a>
+            </dd>
+        </dl>
+
+        <h3 id="styled_label_properties">Styled Label Properties</h3>
+
+        <p>
+            Certain labels allow for additional control over their appearance.
+            They support the properties:
+        </p>
+
+        <dl class="enum properties">
+            <dt>border_color</dt>
+            <dd>
+                a <a href="themes.html#color_values">color value</a> for
+                the border of the label
+            </dd>
+            <dt>background_color</dt>
+            <dd>
+                a <a href="themes.html#color_values">color value</a> for
+                the background of the label
+            </dd>
+        </dl>
+    </section>
+
+    <section>
+        <h2 id="elements">Elements</h2>
+
+        <p>
+            The following is an exhaustive list of the elements that comprise
+            the Sublime Merge UI, along with supported attributes and
+            properties.
+        </p>
+
+        <ul>
+            <li><a href="themes.html#elements-windows">Windows</a></li>
+            <li><a href="themes.html#elements-header">Header</a></li>
+            <li><a href="themes.html#elements-location_bar">Location Bar</a></li>
+            <li><a href="themes.html#elements-commit_list">Commit List</a></li>
+            <li><a href="themes.html#elements-search_view">Search View</a></li>
+            <li><a href="themes.html#elements-blame_view">Blame View</a></li>
+            <li><a href="themes.html#elements-commit_view">Commit View</a></li>
+            <li><a href="themes.html#elements-file_diffs">File Diffs</a></li>
+            <li><a href="themes.html#elements-tree_view">Tree View</a></li>
+            <li><a href="themes.html#elements-merge_tool">Merge Tool</a></li>
+            <li><a href="themes.html#elements-progress">Progress</a></li>
+            <li><a href="themes.html#elements-quick_panel">Quick Panel</a></li>
+            <li><a href="themes.html#elements-dialogs">Dialogs</a></li>
+            <li><a href="themes.html#elements-scroll_bars">Scroll Bars</a></li>
+            <li><a href="themes.html#elements-inputs">Inputs</a></li>
+            <li><a href="themes.html#elements-buttons">Buttons</a></li>
+            <li><a href="themes.html#elements-labels">Labels</a></li>
+            <li><a href="themes.html#elements-tool_tips">Tool Tips</a></li>
+            <li><a href="themes.html#elements-hints">Hints</a></li>
+        </ul>
+
+        <h3 id="elements-windows">Windows</h3>
+
+        <dl class="enum">
+            <dt>title_bar</dt>
+            <dd>
+                <p>
+                    <em>Only supported on OS X 10.10+.</em>
+                </p>
+                <h4>Properties</h4>
+                <dl class="properties">
+                    <dt>fg</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use for the window title text
+                    </dd>
+                    <dt>bg</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use for the title bar background
+                    </dd>
+                </dl>
+            </dd>
+            <dt>switch_project_window</dt>
+            <dd>
+                <p>
+                    This element contains the Switch Repository window, and
+                    is intended for use in a <code>parents</code> specifier.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties"><em>none</em></a>
+            </dd>
+        </dl>
+
+        <h3 id="elements-header">Header</h3>
+
+        <dl class="enum">
+            <dt>header</dt>
+            <dd>
+                <p>
+                    Container for the tool bar
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>search_dialog</dt>
+            <dd>
+                <p>
+                    Container for the search box, contained within the
+                    <code>header</code>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>search_text_control</dt>
+            <dd>
+                <p>
+                    The search input itself, contained within the
+                    <code>search_dialog</code>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>button_control</dt>
+            <dd>
+                <p>
+                    A basic button in the header. Used for text buttons when
+                    the merge tool is being displayed.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <a class="properties" href="themes.html#minimum_size_properties">minimum size properties</a>
+            </dd>
+            <dt>button_control icon_button</dt>
+            <dd>
+                <p>
+                    A basic buttons in the header that contains an icon. Used
+                    with the following icons:
+                </p>
+                <ul>
+                    <li><code>icon_location_bar</code></li>
+                    <li><code>icon_back</code></li>
+                    <li><code>icon_forward</code></li>
+                    <li><code>icon_pop_stash</code></li>
+                    <li><code>icon_search</code></li>
+                    <li><code>icon_more</code></li>
+                </ul>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <a class="properties" href="themes.html#minimum_size_properties">minimum size properties</a>
+            </dd>
+            <dt>button_control_left icon_button</dt>
+            <dd>
+                <p>
+                    The left-hand button of a two button pair. Used with the
+                    following icons:
+                </p>
+                <ul>
+                    <li><code>icon_stash</code></li>
+                    <li><code>icon_push</code></li>
+                    <li><code>icon_pull</code></li>
+                </ul>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <a class="properties" href="themes.html#minimum_size_properties">minimum size properties</a>
+            </dd>
+            <dt>button_control_right icon_button</dt>
+            <dd>
+                <p>
+                    The right-hand button of a two button pair. Used with the
+                    following icons:
+                </p>
+                <ul>
+                    <li><code>icon_options_dropdown</code></li>
+                </ul>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <a class="properties" href="themes.html#minimum_size_properties">minimum size properties</a>
+            </dd>
+            <dt>icon_location_bar</dt>
+            <dd>
+                <p>
+                    The icon for the Location Bar button in the header
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>icon_back</dt>
+            <dd>
+                <p>
+                    The icon for the Back button in the header
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>icon_forward</dt>
+            <dd>
+                <p>
+                    The icon for the Forward button in the header
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>icon_stash</dt>
+            <dd>
+                <p>
+                    The icon for the Stash button in the header
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>icon_pop_stash</dt>
+            <dd>
+                <p>
+                    The icon for the Pop Stash button in the header
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>icon_options_dropdown</dt>
+            <dd>
+                <p>
+                    The icon for the extra options buttons to the right of the
+                    Stash, Push and Pull buttons
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>icon_search</dt>
+            <dd>
+                <p>
+                    The icon for the Search button in the header
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>icon_more</dt>
+            <dd>
+                <p>
+                    The icon for the <code>...</code> button in the header to
+                    right right of Search
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>icon_push</dt>
+            <dd>
+                <p>
+                    The icon for the Push button in the header
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>icon_pull</dt>
+            <dd>
+                <p>
+                    The icon for the Pull button in the header
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>info_area</dt>
+            <dd>
+                <p>
+                    The box displayed in the middle of the <code>header</code>
+                    that contains:
+                </p>
+                <ul>
+                    <li>
+                        a <code>label_control</code> with the current branch
+                        name, OR <code>icon_cancel</code> button and a
+                        <code>label_control</code> showing the current running
+                        operation, OR <code>info_area_line</code> with the
+                        <code>failed_label</code> and a
+                        <code>label_control</code> with the last git error
+                    </li>
+                    <li>
+                        the <code>git_output_button</code> on the left side
+                    </li>
+                    <li>
+                        the <code>toggle_diverged_banner_button</code> on the
+                        right side, when the current branch is in a diverged
+                        state
+                    </li>
+                    <li>
+                        a <code>progress_bar_control</code> and
+                        <code>progress_gauge_control</code> along the buttom
+                        edge while running a git operation that includes
+                        progress information
+                    </li>
+                </ul>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <a class="properties" href="themes.html#minimum_size_properties">minimum size properties</a>
+                <dl class="properties">
+                    <dt>icon_spacing</dt>
+                    <dd>
+                        a two-element array of integers specifying the x and y
+                        spacing around the icon buttons shown on the left and
+                        right - <code>git_output_button</code> and 
+                        <code>toggle_diverged_banner_button</code>
+                    </dd>
+                </dl>
+            </dd>
+            <dt>icon_cancel</dt>
+            <dd>
+                <p>
+                    The cancel button shown to the left of the current running
+                    operation in the <code>info_area</code>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>git_output_button</dt>
+            <dd>
+                <p>
+                    An icon button displayed in the left side of the
+                    <code>info_area</code>.
+                </p>
+                <p>
+                    Four variants of this class exist, indicating the status of
+                    the last git command run:
+                </p>
+                <ul>
+                    <li><code>git_output_button succeeded</code></li>
+                    <li><code>git_output_button failed</code></li>
+                    <li><code>git_output_button running</code></li>
+                    <li><code>git_output_button cancelled</code></li>
+                </ul>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>toggle_diverged_banner_button</dt>
+            <dd>
+                <p>
+                    An icon button displayed in the right side of the
+                    <code>info_area</code> when the current branch has diverged
+                    from its tracking branch.
+                </p>
+                <p>
+                    When the diverged banner is shown, the class name will be
+                    <code>toggle_diverged_banner_button hide</code> to indicate
+                    the button may be pressed to hide the banner.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>info_area_line</dt>
+            <dd>
+                <p>
+                    When a git command fails, the <code>info_area</code>
+                    displays the text <code>failed:</code> followed by the first
+                    line of the error. This contain controls spacing between the
+                    <code>failed:</code> label and the error message.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#spacing_properties">spacing properties</a>
+            </dd>
+            <dt>failed_label</dt>
+            <dd>
+                <p>
+                    Displays the text <code>failed:</code> inside of
+                    <code>info_area</code> when a git command fails. <em>The
+                    error message itself is just a <code>label_control</code>
+                    that can be targeted by a parents selector.</em>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+                <a class="properties" href="themes.html#styled_label_properties">styled label properties</a>
+            </dd>
+            <dt>diverged_container</dt>
+            <dd>
+                <p>
+                    When the current branch has diverged from its tracking
+                    branch, this banner is shown at the bottom of the
+                    <code>header</code>.
+                </p>
+                <p>
+                    <em>Labels and buttons shown in the diverged banner can be
+                    targeted using a parents selector.</em>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>diverged_button_container</dt>
+            <dd>
+                <p>
+                    A container used to control spacing between the buttons in
+                    the diverged container
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#spacing_properties">spacing properties</a>
+            </dd>
+        </dl>
+
+        <h3 id="elements-location_bar">Location Bar</h3>
+
+        <dl class="enum">
+            <dt>location_bar_container</dt>
+            <dd>
+                <p>
+                    The primary location bar container that handles scrolling
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>location_bar_tree</dt>
+            <dd>
+                <p>
+                    A tree control containing multiple
+                    <code>location_bar_row</code>s
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#data_table_properties">data table properties</a>
+                <dl class="properties">
+                    <dt>indent</dt>
+                    <dd>
+                        an integer amount to indent each level of the tree structure
+                    </dd>
+                    <dt>indent_offset</dt>
+                    <dd>
+                        an additional indent applied
+                        to every row, for the sake of positioning
+                        <code>disclosure_button_control</code> and
+                        <code>close_button</code>
+                    </dd>
+                    <dt>indent_top_level</dt>
+                    <dd>
+                        a boolean if top-level rows
+                        in the tree should be indented
+                    </dd>
+                    <dt>spacer_rows</dt>
+                    <dd>
+                        a boolean controlling if a blank row should be added between
+                        the <em>Open Files</em> and <em>Folders</em> sections of
+                        the sidebar, when both are visible.
+                    </dd>
+                </dl>
+            </dd>
+            <dt>location_bar_row</dt>
+            <dd>
+                <p>
+                    A row may contain a header, branch, remote, tag, stash or
+                    submodule
+                </p>
+                <h4>Attributes</h4>
+                <dl class="attributes">
+                    <dt>selectable</dt>
+                    <dd>
+                        when a row is selectable
+                    </dd>
+                    <dt>selected</dt>
+                    <dd>
+                        when an selectable row is selected
+                    </dd>
+                    <dt>expandable</dt>
+                    <dd>
+                        when a row is expandable
+                    </dd>
+                    <dt>expanded</dt>
+                    <dd>
+                        when an expandable row is expanded
+                    </dd>
+                </dl>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>location_bar_heading</dt>
+            <dd>
+                <p>
+                    One of the "Branches", "Remotes", "Tags", "Stashes" or
+                    "Submodules" headings in the sidebar
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+                <dl class="properties">
+                    <dt>fg</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use for the text
+                    </dd>
+                    <dt>case</dt>
+                    <dd>
+                        <p>
+                            the case modification to use for the heading -
+                            <code>"upper"</code>, <code>"lower"</code> or
+                            <code>"title"</code>.
+                        </p>
+                        <div class="example">
+                            Default: <code>"upper"</code>
+                        </div>
+                    </dd>
+                </dl>
+            </dd>
+            <dt>location_bar_label</dt>
+            <dd>
+                <p>
+                    Names of branches, remotes, tags, stashes or submodules
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+                <dl class="properties">
+                    <dt>fg</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use for the text
+                    </dd>
+                </dl>
+            </dd>
+            <dt>disclosure_button_control</dt>
+            <dd>
+                <p>
+                    An expand/collapse icon present in all <code>tree_row</code>s
+                    that can be expanded
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for buttons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>location_bar_branch_row</dt>
+            <dd>
+                <p>
+                    A spacing-only container that holds the
+                    <code>icon_visible</code> (or <code>icon_hidden</code>) and
+                    <code>branch_stats_meta</code> container.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#spacing_properties">spacing properties</a>
+            </dd>
+            <dt>button_control icon_button transparent</dt>
+            <dd>
+                <p>
+                    A button containing either the <code>icon_visible</code> or
+                    <code>icon_hidden</code>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <a class="properties" href="themes.html#minimum_size_properties">minimum size properties</a>
+            </dd>
+            <dt>icon_visible</dt>
+            <dd>
+                <p>
+                    Show if a ref is visible in the commit list
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>icon_hidden</dt>
+            <dd>
+                <p>
+                    Shows if a ref is hidden in the commit list
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>icon_uninitialized_submodule</dt>
+            <dd>
+                <p>
+                    Used for a submodule that has not been initialized yet
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>icon_section_actions</dt>
+            <dd>
+                <p>
+                    Used to show the Submodules menu for to the right of the
+                    heading
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>submodule_stat</dt>
+            <dd>
+                <p>
+                    Displays a number next to a submodule that includes the
+                    number of modified and untracked files
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+                <a class="properties" href="themes.html#styled_label_properties">styled label properties</a>
+            </dd>
+            <dt>branch_stats_meta</dt>
+            <dd>
+                <p>
+                    A spacing-only container that holds the ahead and behind
+                    stat counters and allows controlling the spacing between
+                    them
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#spacing_properties">spacing properties</a>
+            </dd>
+            <dt>branch_stat</dt>
+            <dd>
+                <p>
+                    A theme-able container than holds a counter and arrow
+                    indicating if a branch is ahead or behind its tracking
+                    branch.
+                </p>
+                <p>
+                    If both ahead and behind counters are present, this element
+                    will be present in two forms: <code>branch_stat left</code>
+                    and <code>branch_stat right</code>.
+                </p>
+            </dd>
+            <dt>branch_stat_meta</dt>
+            <dd>
+                <p>
+                    A spacing-only container that holds the arrow and number
+                    for an ahead or behind counter
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#spacing_properties">spacing properties</a>
+            </dd>
+            <dt>branch_stat_label</dt>
+            <dd>
+                <p>
+                    Displays a number of commits a branch is ahead or behind
+                    its tracking branch
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+            </dd>
+            <dt>icon_ahead</dt>
+            <dd>
+                <p>
+                    Shown next to the count of commits a branch is ahead of its
+                    tracking branch
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>icon_behind</dt>
+            <dd>
+                <p>
+                    Shown next to the count of commits a branch is behind its
+                    tracking branch
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+        </dl>
+
+        <h3 id="elements-commit_list">Commit List</h3>
+
+        <dl class="enum">
+            <dt>commit_table_container</dt>
+            <dd>
+                <p>
+                    The primary commit list container that handles scrolling
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>commit_table</dt>
+            <dd>
+                <p>
+                    The primary commit list container that handles scrolling
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#data_table_properties">data table properties</a>
+            </dd>
+            <dt>commit_table_row</dt>
+            <dd>
+                <p>
+                    Each row contains a <code>commit_summary_control</code>
+                </p>
+                <h4>Attributes</h4>
+                <dl class="attributes">
+                    <dt>selectable</dt>
+                    <dd>
+                        when a row is selectable
+                    </dd>
+                    <dt>selected</dt>
+                    <dd>
+                        when an selectable row is selected
+                    </dd>
+                    <dt>expandable</dt>
+                    <dd>
+                        when a row is expandable
+                    </dd>
+                    <dt>expanded</dt>
+                    <dd>
+                        when an expandable row is expanded
+                    </dd>
+                </dl>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>commit_summary_control</dt>
+            <dd>
+                <p>
+                    A container for the information about a commit
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>commit_edges_control</dt>
+            <dd>
+                <p>
+                    The control that draws the commit graph edges (lines)
+                </p>
+                <h4>Properties</h4>
+                <dl class="properties">
+                    <dt>line_width</dt>
+                    <dd>
+                        an integer DIP width for the edges - will be snapped to
+                        device pixels for crisp drawing
+                    </dd>
+                    <dt>num_colors</dt>
+                    <dd>
+                        an integer of the number of colors to cycle through
+                        when drawing the edges - max 8
+                    </dd>
+                    <dt>color0 ... color7</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use as a color for edges
+                    </dd>
+                </dl>
+            </dd>
+            <dt>index_files_label</dt>
+            <dd>
+                <p>
+                    The top-row label in the <em>Commit Changes</em> row of the
+                    commit list
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+            </dd>
+            <dt>index_action_label</dt>
+            <dd>
+                <p>
+                    The bottom-row label in the <em>Commit Changes</em> row of the
+                    commit list
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+            </dd>
+            <dt>message_label</dt>
+            <dd>
+                <p>
+                    Contains the commit message in a
+                    <code>commit_summary_control</code>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+            </dd>
+            <dt>author_label</dt>
+            <dd>
+                <p>
+                    Contains the author's name in a
+                    <code>commit_summary_control</code>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+            </dd>
+            <dt>time_label</dt>
+            <dd>
+                <p>
+                    Contains the commit time in a
+                    <code>commit_summary_control</code>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+            </dd>
+            <dt>commit_file_name_label</dt>
+            <dd>
+                <p>
+                    Contains the file name when showing the
+                    expanded commit view in the Commit List. <em>This can be
+                    seen by clicking the colored box to the left of a
+                    commit.</em>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+            </dd>
+            <dt>commit_file_path_label</dt>
+            <dd>
+                <p>
+                    Contains the file path when showing the
+                    expanded commit view in the Commit List. <em>This can be
+                    seen by clicking the colored box to the left of a
+                    commit.</em>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+            </dd>
+            <dt>head_annotation</dt>
+            <dd>
+                <p>
+                    Contains the name of the HEAD branch. Displayed to the right
+                    of a commit's author in a
+                    <code>commit_summary_control</code>, or in the
+                    <em>Branches</em> row of the commit info table in the
+                    <code>Commit Detail</code> view.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+                <a class="properties" href="themes.html#styled_label_properties">styled label properties</a>
+            </dd>
+            <dt>branch_annotation</dt>
+            <dd>
+                <p>
+                    Contains the name of a local branch. Displayed to the right
+                    of a commit's author in a
+                    <code>commit_summary_control</code>, or in the
+                    <em>Branches</em> row of the commit info table in the
+                    <code>Commit Detail</code> view.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+                <a class="properties" href="themes.html#styled_label_properties">styled label properties</a>
+            </dd>
+            <dt>remote_annotation</dt>
+            <dd>
+                <p>
+                    Contains the name of a remote branch. Displayed to the right
+                    of a commit's author in a
+                    <code>commit_summary_control</code>, or in the
+                    <em>Branches</em> row of the commit info table in the
+                    <code>Commit Detail</code> view.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+                <a class="properties" href="themes.html#styled_label_properties">styled label properties</a>
+            </dd>
+            <dt>tag_annotation</dt>
+            <dd>
+                <p>
+                    Contains the name of a tag. Displayed to the right
+                    of a commit's author in a
+                    <code>commit_summary_control</code>, or in the
+                    <em>Tags</em> row of the commit info table in the
+                    <code>Commit Detail</code> view.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+                <a class="properties" href="themes.html#styled_label_properties">styled label properties</a>
+            </dd>
+            <dt>stash_annotation</dt>
+            <dd>
+                <p>
+                    Contains the text <code>stash</code>. Displayed to the right
+                    of a commit's author in a
+                    <code>commit_summary_control</code>.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+                <a class="properties" href="themes.html#styled_label_properties">styled label properties</a>
+            </dd>
+            <dt>file_annotation</dt>
+            <dd>
+                <p>
+                    Contains the number of modified files in a commit. Displayed
+                    to the right of the commit message in a
+                    <code>commit_summary_control</code>.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+                <a class="properties" href="themes.html#styled_label_properties">styled label properties</a>
+            </dd>
+        </dl>
+
+        <h3 id="elements-search_view">Search View</h3>
+
+        <dl class="enum">
+            <dt>search_message</dt>
+            <dd>
+                <p>
+                    Container around errors displayed about search syntax
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>search_help</dt>
+            <dd>
+                <p>
+                    Search syntax help message displayed when opening the
+                    search view
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        the <a href="themes.html#padding_margin">margin</a>
+                        around the help text
+                    </dd>
+                    <dt>background_color</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use as the message background
+                    </dd>
+                    <dt>color</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use as the base text color
+                    </dd>
+                    <dt>headline_color</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use as the text color for headings
+                    </dd>
+                    <dt>link_color</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use as the text color for links
+                    </dd>
+                </dl>
+            </dd>
+            <dt>searching</dt>
+            <dd>
+                <p>
+                    An activity indicator displayed in the Commit List when
+                    a search in ongoing. Typically this will be a texture
+                    animation.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+        </dl>
+
+        <h3 id="elements-blame_view">Blame View</h3>
+
+        <dl class="enum">
+            <dt>blame_commit_summary</dt>
+            <dd>
+                <p>
+                    The popup window shown when hovering over the gutter of
+                    the blame view
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        the <a href="themes.html#padding_margin">margin</a>
+                        around the help text
+                    </dd>
+                    <dt>background_color</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use as the message background
+                    </dd>
+                    <dt>color</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use as the base text color
+                    </dd>
+                    <dt>headline_color</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use as the text color for headings
+                    </dd>
+                    <dt>link_color</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use as the text color for links
+                    </dd>
+                </dl>
+            </dd>
+            <dt>blame_text_control</dt>
+            <dd>
+                <p>
+                    Search syntax help message displayed when opening the
+                    search view
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <dl class="properties">
+                    <dt>num_colors</dt>
+                    <dd>
+                        an integer of the number of colors to cycle through
+                        when drawing the commit gutter colors - max 20
+                    </dd>
+                    <dt>color0 ... color19</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use in the gutter
+                    </dd>
+                </dl>
+            </dd>
+        </dl>
+
+        <h3 id="elements-commit_detail">Commit View</h3>
+
+        <p>
+            The commit view is utilized both as the <em>Commit Dialog</em>, when
+            staging files and writing a commit message, and the <em>Commit
+            Detail</em>, when viewing the details of an existing commit.
+        </p>
+
+        <dl class="enum">
+            <dt>details_panel</dt>
+            <dd>
+                <p>
+                    Container for the right-most pane used to displays diffs
+                    and blame controls
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>commit_dialog_header</dt>
+            <dd>
+                <p>
+                    Container for the commit dialog text area and buttons in
+                    the <em>Commit Dialog</em>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>commit_author_container</dt>
+            <dd>
+                <p>
+                    A container for the label showing the commit author below
+                    the commit message text area. This will change to the
+                    selection info once the user has entered a commit message.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>label_control commit_author</dt>
+            <dd>
+                <p>
+                    The label showing the authorship info that will be used for
+                    the commit. The contents change to selection info once a
+                    commit message is entered.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+            </dd>
+            <dt>commit_buttons</dt>
+            <dd>
+                <p>
+                    A spacing-only container to layout the commit button(s)
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#spacing_properties">spacing properties</a>
+            </dd>
+            <dt>button_control commit_button</dt>
+            <dd>
+                <p>
+                    The commit button. Text displayed may change on the
+                    repository state to things such as: <em>Continue
+                    rebase</em> or <em>Complete cherry pick</em>.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <a class="properties" href="themes.html#minimum_size_properties">minimum size properties</a>
+            </dd>
+            <dt>split_commit_button</dt>
+            <dd>
+                <p>
+                    A container for the commit button and options dropdown
+                    when both are displayed
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#minimum_size_properties">minimum size properties</a>
+            </dd>
+            <dt>commit_details_header</dt>
+            <dd>
+                <p>
+                    Container for the commit details table at the top of the
+                    <em>Commit Detail</em> view
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>commit_message_container</dt>
+            <dd>
+                <p>
+                    Container to layout the commit details button, actions
+                    button and commit message at the top of the <em>Commit
+                    Detail</em>.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <a class="properties" href="themes.html#spacing_properties">spacing properties</a>
+                <dl class="properties">
+                    <dt>message_content_margin</dt>
+                    <dd>
+                        extra <a href="themes.html#padding_margin">margin</a>
+                        around the commit message
+                    </dd>
+                </dl>
+            </dd>
+            <dt>edit_button_container</dt>
+            <dd>
+                <p>
+                    A spacing-only container to layout the edit and cancel
+                    buttons when editing a commit message
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#spacing_properties">spacing properties</a>
+            </dd>
+            <dt>field_name_label</dt>
+            <dd>
+                <p>
+                    The label for a field name in the commit details table
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+            </dd>
+            <dt>separator_container</dt>
+            <dd>
+                <p>
+                    A container for the separator shown between the
+                    Working Directory and Staged sections of the
+                    <em>Commit Dialog</em>
+                </p>
+                <h4>Properties</h4>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        the <a href="themes.html#padding_margin">margin</a>
+                        around the separator
+                    </dd>
+                </dl>
+            </dd>
+            <dt>separator</dt>
+            <dd>
+                <p>
+                    A separator icon shown between the
+                    Working Directory and Staged sections of the
+                    <em>Commit Dialog</em>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>terminator_container</dt>
+            <dd>
+                <p>
+                    A container for the terminator shown at the end of the
+                    <em>Commit List</em> and the end of the diffs in the
+                    <em>Commit View</em>
+                </p>
+                <h4>Properties</h4>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        the <a href="themes.html#padding_margin">margin</a>
+                        around the terminator
+                    </dd>
+                </dl>
+            </dd>
+            <dt>terminator</dt>
+            <dd>
+                <p>
+                    A terminator icon shown at the end of the
+                    <em>Commit List</em> and the end of the diffs in the
+                    <em>Commit View</em>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>loading</dt>
+            <dd>
+                <p>
+                    An activity indicator displayed in the details pane when
+                    loading something, such as the tree view for a commit.
+                    Typically this will be a texture animation.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+        </dl>
+
+        <h3 id="elements-file_diffs">File Diffs</h3>
+
+        <dl class="enum">
+            <dt>expand_all_diff_control</dt>
+            <dd>
+                <p>
+                    A control that expands or collapses one or more
+                    <code>file_diff_control</code>s. Contains a
+                    <code>file_diff_header</code>, which in turn contains a
+                    <code>disclosure_button_control</code> and
+                    <code>label_control</code>.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>file_diff_control</dt>
+            <dd>
+                <p>
+                    A container for a file diff. Contains a
+                    <code>file_diff_header</code> and one or more
+                    <code>file_diff_hunk_container</code>.
+                </p>
+                <h4>Attributes</h4>
+                <dl class="attributes">
+                    <dt>expanded</dt>
+                    <dd>
+                        when the diff is expanded to show the hunks
+                    </dd>
+                </dl>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <a class="properties" href="themes.html#spacing_properties">spacing properties</a>
+            </dd>
+            <dt>file_diff_header</dt>
+            <dd>
+                <p>
+                    The header for a file diff, containing:
+                </p>
+                <ul>
+                    <li>
+                        A <code>disclosure_button_control</code> for expanding
+                        and collapsing
+                    </li>
+                    <li>
+                        A <code>file_meta</code> container with details about
+                        the file
+                    </li>
+                    <li>
+                        One or more <code>button_control</code>s. These
+                        will be buttons such as <em>Stage</em>,
+                        <em>Delete</em>, <em>Discard</em> or the more
+                        (<code>...</code>) button.
+                    </li>
+                </ul>
+                <h4>Attributes</h4>
+                <dl class="attributes">
+                    <dt>selected</dt>
+                    <dd>
+                        when the diff header has input focus
+                    </dd>
+                </dl>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <a class="properties" href="themes.html#spacing_properties">spacing properties</a>
+            </dd>
+            <dt>file_meta</dt>
+            <dd>
+                <p>
+                    A spacing-only container for laying out file info. Contains:
+                </p>
+                <ul>
+                    <li>
+                        Zero or more <code>file_icon</code>s. The icons
+                        are present when a file is deleted, staged,
+                        recently modified, or some combination of all
+                        three. When two or more are present, they will
+                        be wrapped in a <code>file_icons</code>
+                        container and the classes will be
+                        <code>file_icon file_icon_left</code> and
+                        <code>file_icon file_icon right</code>.
+                    </li>
+                    <li>
+                        If the file is renamed, a
+                        <code>renamed_file_container</code> with multiple
+                        <code>label_control</code>, <code>label_control
+                        inserted</code>, <code>label_control deleted</code>
+                        and <code>label_control diff_separator</code>.
+                    </li>
+                    <li>
+                        If the file is not renamed, a basic
+                        <code>label_control</code>
+                    </li>
+                </ul>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#spacing_properties">spacing properties</a>
+            </dd>
+            <dt>file_icon</dt>
+            <dd>
+                <p>
+                    A container that holds an icon, or an icons and text.
+                    When part of a pair, the class will be <code>file_icon
+                    file_icon_left</code> or
+                    <code>file_icon file_icon_right</code>.
+                </p>
+                <p>
+                    Will contain one of the following:
+                </p>
+                <ul>
+                    <li><code>icon_unmerged</code></li>
+                    <li><code>icon_deleted</code></li>
+                    <li><code>icon_staged</code></li>
+                    <li><code>icon_recent</code></li>
+                    <li>
+                        <code>total_untracked</code> containing an
+                        <code>icon_text</code>
+                    </li>
+                    <li>
+                        <code>recently_modified</code> containing
+                        <code>icon_recent</code> and <code>icon_text</code>
+                    </li>
+                </ul>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <a class="properties" href="themes.html#minimum_size_properties">minimum size properties</a>
+            </dd>
+            <dt>file_icons</dt>
+            <dd>
+                <p>
+                    When more than one <code>file_icon</code> is present, they
+                    will be wrapped in this spacing-only container
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#spacing_properties">spacing properties</a>
+            </dd>
+            <dt>icon_unmerged</dt>
+            <dd>
+                <p>
+                    Shown in the <code>file_meta</code> of a file that is
+                    unmerged
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>icon_deleted</dt>
+            <dd>
+                <p>
+                    Shown in the <code>file_meta</code> of a file that has been
+                    deleted
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>icon_staged</dt>
+            <dd>
+                <p>
+                    Shown in the <code>file_meta</code> of a file that has been
+                    staged
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>icon_recent</dt>
+            <dd>
+                <p>
+                    Shown in the <code>file_meta</code> of an untracked file
+                    that has been modified recently
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>recently_modified</dt>
+            <dd>
+                <p>
+                    A spacing-only container holding <code>icon_recent</code>
+                    and <code>icon_text</code>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#spacing_properties">spacing properties</a>
+            </dd>
+            <dt>total_untracked</dt>
+            <dd>
+                <p>
+                    A spacing-only container holding an <code>icon_text</code>
+                    with the number of untracked files
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#spacing_properties">spacing properties</a>
+            </dd>
+            <dt>icon_text</dt>
+            <dd>
+                <p>
+                    The label shown in a <code>file_icon</code> container
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+            </dd>
+            <dt>file_diff_hunk_container</dt>
+            <dd>
+                <p>
+                    A container for a file diff. Contains a
+                    <code>file_diff_hunk_header</code> and either a
+                    <code>hunk_description_container</code> or
+                    <code>diff scroll_area_control</code> with a
+                    <code>diff_text_control</code>.
+                </p>
+            </dd>
+            <dt>file_diff_hunk_header</dt>
+            <dd>
+                <p>
+                    A container for a hunk in a file diff. Contains a
+                    <code>hunk_label_container</code> with a
+                    <code>label_control</code> plus zero or more
+                    <code>button_control hunk_button</code>s.
+                </p>
+                <h4>Attributes</h4>
+                <dl class="attributes">
+                    <dt>selected</dt>
+                    <dd>
+                        when the diff header has input focus
+                    </dd>
+                </dl>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>hunk_label_container</dt>
+            <dd>
+                <p>
+                    A container for the label identifying a hunk.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>hunk_description_container</dt>
+            <dd>
+                <p>
+                    A container for a hunk description. Hunk descriptions are
+                    used when a hunk represents a binary file, or a file mode
+                    change.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+        </dl>
+
+        <h3 id="elements-tree_view">Tree View</h3>
+
+        <dl class="enum">
+            <dt>tree_details</dt>
+            <dd>
+                <p>
+                    Container for the header and body used to display the tree
+                    for a commit. Does not have any theme-able properties, but
+                    is useful in a parents selector.
+                </p>
+            </dd>
+            <dt>tree_list</dt>
+            <dd>
+                <p>
+                    A container for the <code>tree</code>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>tree</dt>
+            <dd>
+                <p>
+                    The tree control showing the files and folders, i.e. the
+                    tree, for a specific commit
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#data_table_properties">data table properties</a>
+            </dd>
+            <dt>tree_row</dt>
+            <dd>
+                <p>
+                    A row may contain a file or folder name
+                </p>
+                <h4>Attributes</h4>
+                <dl class="attributes">
+                    <dt>selectable</dt>
+                    <dd>
+                        when a row is selectable
+                    </dd>
+                    <dt>selected</dt>
+                    <dd>
+                        when an selectable row is selected
+                    </dd>
+                    <dt>expandable</dt>
+                    <dd>
+                        when a row is expandable
+                    </dd>
+                    <dt>expanded</dt>
+                    <dd>
+                        when an expandable row is expanded
+                    </dd>
+                </dl>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+        </dl>
+
+        <h3 id="elements-merge_tool">Merge Tool</h3>
+
+        <dl class="enum">
+            <dt>use_hunk_button</dt>
+            <dd>
+                <p>
+                    The button drawn in the gutter of the merge tool that allows
+                    a user to select a hunk for use in the merged version. Two
+                    variants exist: <code>use_hunk_button left</code> and
+                    <code>use_hunk_button right</code>.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        for icons, the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+        </dl>
+
+        <h3 id="elements-progress">Progress</h3>
+
+        <dl class="enum">
+            <dt>progress_bar_control</dt>
+            <dd>
+                <p>
+                    The progress bar container. The progress bar is
+                    displayed in the Update window used for updates on
+                    OS X and Windows. It is also used in the
+                    <code>info_area</code> to display progress for git commands
+                    that provide progress information.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>progress_gauge_control</dt>
+            <dd>
+                <p>
+                    The bar representing the progress completed so far
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        the <a href="themes.html#padding_margin">margin</a>
+                        specifies the height of the bar
+                    </dd>
+                </dl>
+            </dd>
+        </dl>
+
+        <h3 id="elements-quick_panel">Quick Panel</h3>
+
+        <p>
+            The quick panel is used for the command palette, switch repository
+            window and the git output overlay.
+        </p>
+
+        <dl class="enum">
+            <dt>overlay_control</dt>
+            <dd>
+                <p>
+                    The container for the quick panel, including the input
+                    and data table
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>quick_panel</dt>
+            <dd>
+                <p>
+                    The data table displayed below the input. Normally the
+                    height is dynamic so the layers will not be visible,
+                    however the Switch Project window will use layers for
+                    the blank space below the filtered options.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#data_table_properties">data table properties</a>
+            </dd>
+            <dt>mini_quick_panel_row</dt>
+            <dd>
+                <p>
+                    A row in <code>quick_panel</code>. Contains
+                    one <code>quick_panel_label</code> for each line of
+                    text in the row.
+                </p>
+                <h4>Attributes</h4>
+                <dl class="attributes">
+                    <dt>selected</dt>
+                    <dd>
+                        when the row is selected
+                    </dd>
+                </dl>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            </dd>
+            <dt>quick_panel_row</dt>
+            <dd>
+                <p>
+                    A row in the Switch Repository window.
+                </p>
+                <p>
+                    Contains <code>quick_panel_label</code> with the
+                    repository name, and <code>quick_panel_path_label</code> for
+                    the repository path.
+                </p>
+                <h4>Attributes</h4>
+                <dl class="attributes">
+                    <dt>selected</dt>
+                    <dd>
+                        when the row is selected
+                    </dd>
+                </dl>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>quick_panel_label</dt>
+            <dd>
+                <p>
+                    Repository names in <code>quick_panel_row</code>
+                    and all text in <code>mini_quick_panel_row</code>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#filter_label_properties">filter label properties</a>
+            </dd>
+            <dt>quick_panel_path_label</dt>
+            <dd>
+                <p>
+                    Repository paths in <code>quick_panel_row</code>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#filter_label_properties">filter label properties</a>
+            </dd>
+            <dt>quick_panel_label preview</dt>
+            <dd>
+                <p>
+                    This label is used to show text in the command palette
+                    preview row when an input handler provides a preview
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+            </dd>
+            <dt>quick_panel_label command</dt>
+            <dd>
+                <p>
+                    This label is used in the right-hand side of command palette
+                    rows when selecting options for a command, e.g.
+                    <em>Stash...</em>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+            </dd>
+        </dl>
+
+        <h3 id="elements-dialogs">Dialogs</h3>
+
+        <dl class="enum">
+            <dt>dialog</dt>
+            <dd>
+                <p>
+                    The about, license, update and changelog windows use this
+                    class for the window background
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+        </dl>
+
+        <h3 id="elements-scroll_bars">Scroll Bars</h3>
+
+        <dl class="enum">
+            <dt>scroll_area_control</dt>
+            <dd>
+                <p>
+                    The scroll area contains the element being scrolled,
+                    along with the bar, track and puck.
+                </p>
+                <h4>Properties</h4>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        a <a href="themes.html#padding_margin">margin</a> that is
+                        added around the content being scrolled
+                    </dd>
+                    <dt>overlay</dt>
+                    <dd>
+                        sets the scroll bars to be rendered on
+                        top of the content
+                    </dd>
+                    <dt>left_shadow</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color value</a> to use when
+                        drawing a shadow to indicate the area can be scrolled
+                        to the left
+                    </dd>
+                    <dt>left_shadow_size</dt>
+                    <dd>
+                        in integer of the width of the shadow to draw when the
+                        area can be scrolled to the left
+                    </dd>
+                    <dt>top_shadow</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color value</a> to use when
+                        drawing a shadow to indicate the area can be scrolled
+                        to the top
+                    </dd>
+                    <dt>top_shadow_size</dt>
+                    <dd>
+                        in integer of the height of the shadow to draw when the
+                        area can be scrolled to the top
+                    </dd>
+                    <dt>right_shadow</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color value</a> to use when
+                        drawing a shadow to indicate the area can be scrolled
+                        to the right
+                    </dd>
+                    <dt>right_shadow_size</dt>
+                    <dd>
+                        in integer of the width of the shadow to draw when the
+                        area can be scrolled to the right
+                    </dd>
+                    <dt>bottom_shadow</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color value</a> to use when
+                        drawing a shadow to indicate the area can be scrolled
+                        to the bottom
+                    </dd>
+                    <dt>bottom_shadow_size</dt>
+                    <dd>
+                        in integer of the height of the shadow to draw when the
+                        area can be scrolled to the bottom
+                    </dd>
+                </dl>
+            </dd>
+            <dt>scroll_bar_control</dt>
+            <dd>
+                <p>
+                    The scroll bar contains the scroll track. The tint
+                    is set based on the background color of the
+                    element being scrolled.
+                </p>
+                <h4>Attributes</h4>
+                <dl class="attributes">
+                    <dt>dark</dt>
+                    <dd>
+                        when the scroll area content is dark,
+                        necessitating a light scroll bar
+                    </dd>
+                    <dt>horizontal</dt>
+                    <dd>
+                        when the scroll bar should be horizontal
+                        instead of vertical
+                    </dd>
+                </dl>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <a class="properties" href="themes.html#texture_tinting_properties">texture tinting properties</a>
+            </dd>
+            <dt>scroll_track_control</dt>
+            <dd>
+                <p>
+                    The track that the puck runs along. The tint
+                    is set based on the background color of the
+                    element being scrolled.
+                </p>
+                <h4>Attributes</h4>
+                <dl class="attributes">
+                    <dt>dark</dt>
+                    <dd>
+                        when the scroll area content is dark,
+                        necessitating a light scroll bar
+                    </dd>
+                    <dt>horizontal</dt>
+                    <dd>
+                        when the scroll bar should be horizontal
+                        instead of vertical
+                    </dd>
+                </dl>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <a class="properties" href="themes.html#texture_tinting_properties">texture tinting properties</a>
+            </dd>
+            <dt>scroll_corner_control</dt>
+            <dd>
+                <p>
+                    The dead space in the bottom right of a
+                    <code>scroll_area_control</code> when both the vertical and
+                    horizontal scroll bars are being shown.
+                </p>
+                <h4>Attributes</h4>
+                <dl class="attributes">
+                    <dt>dark</dt>
+                    <dd>
+                        when the scroll area content is dark,
+                        necessitating a light scroll bar
+                    </dd>
+                </dl>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <a class="properties" href="themes.html#texture_tinting_properties">texture tinting properties</a>
+            </dd>
+            <dt>puck_control</dt>
+            <dd>
+                <p>
+                    The scroll puck, or handle. The tint
+                    is set based on the background color of the
+                    element being scrolled.
+                </p>
+                <h4>Attributes</h4>
+                <dl class="attributes">
+                    <dt>dark</dt>
+                    <dd>
+                        when the scroll area content is dark,
+                        necessitating a light scroll bar
+                    </dd>
+                    <dt>horizontal</dt>
+                    <dd>
+                        when the scroll bar should be horizontal
+                        instead of vertical
+                    </dd>
+                </dl>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <a class="properties" href="themes.html#texture_tinting_properties">texture tinting properties</a>
+            </dd>
+        </dl>
+
+        <h3 id="elements-inputs">Inputs</h3>
+
+        <dl class="enum">
+            <dt>text_line_control</dt>
+            <dd>
+                <p>
+                    The text input used by the quick panel and Switch Repository
+                    window.
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>color_scheme_tint</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use to tint the background
+                        of the color scheme
+                    </dd>
+                    <dt>color_scheme_tint_2</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use to add a secondary tint
+                        to the background of the color scheme
+                    </dd>
+                </dl>
+            </dd>
+            <dt>radio_button_list_control</dt>
+            <dd>
+                <p>
+                    A spacing-only container that controls the layout of one
+                    or more <code>checkbox_control</code>s
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#spacing_properties">spacing properties</a>
+            </dd>
+            <dt>checkbox_control</dt>
+            <dd>
+                <p>
+                    A spacing-only container that controls the layout of a
+                    <code>checkbox_box_control</code> next to the
+                    <code>label_control</code>
+                </p>
+                <h4>Properties</h4>
+                <dl class="properties">
+                    <dt>box_margin</dt>
+                    <dd>
+                        an integer controlling the spacing between the box
+                        and the label
+                    </dd>
+                </dl>
+            </dd>
+            <dt>checkbox_box_control</dt>
+            <dd>
+                <h4>Attributes</h4>
+                <dl class="attributes">
+                    <dt>checked</dt>
+                    <dd>
+                        when the checkbox has been selected
+                    </dd>
+                </dl>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        the <a href="themes.html#padding_margin">margin</a>
+                        specifies the dimensions
+                    </dd>
+                </dl>
+            </dd>
+        </dl>
+
+        <h3 id="elements-auto_complete">Auto Complete</h3>
+
+        <dl class="enum">
+            <dt>popup_control auto_complete_popup</dt>
+            <dd>
+                <p>
+                    The primary container for the auto complete popup
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>auto_complete</dt>
+            <dd>
+                <p>
+                    The data table for completion data. The tint
+                    is set based on the background color of the
+                    color scheme applied to the view the popup is
+                    displayed in.
+                </p>
+                <h4>Attributes</h4>
+                <a class="attributes" href="themes.html#luminosity_attributes">luminosity attributes</a>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#data_table_properties">data table properties</a>
+                <a class="properties" href="themes.html#texture_tinting_properties">texture tinting properties</a>
+            </dd>
+            <dt>table_row</dt>
+            <dd>
+                <p>
+                    A row in <code>auto_complete</code>
+                </p>
+                <h4>Attributes</h4>
+                <dl class="attributes">
+                    <dt>selected</dt>
+                    <dd>
+                        when the user has highlighted a completion
+                    </dd>
+                </dl>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>auto_complete_label</dt>
+            <dd>
+                <p>
+                    Text in a <code>table_row</code>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#filter_label_properties">filter label properties</a>
+                <dl class="properties">
+                    <dt>fg_blend</dt>
+                    <dd>
+                        a boolean controlling if the <code>fg</code>,
+                        <code>match_fg</code>, <code>selected_fg</code>,
+                        and <code>selected_match_fg</code> values
+                        should be blended onto the foreground color
+                        from the color scheme of the current view
+                    </dd>
+                </dl>
+            </dd>
+        </dl>
+
+        <h3 id="elements-buttons">Buttons</h3>
+
+        <dl class="enum">
+            <dt>button_control</dt>
+            <dd>
+                <p>
+                    Text buttons
+                </p>
+                <h4>Attributes</h4>
+                <dl class="attributes">
+                    <dt>pressed</dt>
+                    <dd>
+                         set when a button is pressed down
+                    </dd>
+                    <dt>confirm</dt>
+                    <dd>
+                         set when a button needs to be pressed a second time to
+                         ensure the user wants to perform a destructive, or
+                         significant, action
+                    </dd>
+                    <dt>highlighted</dt>
+                    <dd>
+                         set when a button is the next action a user should
+                         perform
+                    </dd>
+                </dl>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <a class="properties" href="themes.html#minimum_size_properties">minimum size properties</a>
+            </dd>
+        </dl>
+
+        <h3 id="elements-labels">Labels</h3>
+
+        <dl class="enum">
+            <dt>label_control</dt>
+            <dd>
+                <p>
+                    Labels are used throughout the interface. <em>Targeting
+                    specific labels can be accomplished by using the
+                    <code>parents</code> key.</em>
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+                <dl class="properties">
+                    <dt>color</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use for the text
+                    </dd>
+                </dl>
+            </dd>
+            <dt>title_label_control</dt>
+            <dd>
+                <p>
+                    The title label is used in the About window and Welcome
+                    screen
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+                <dl class="properties">
+                    <dt>color</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use for the text
+                    </dd>
+                </dl>
+            </dd>
+        </dl>
+
+        <h3 id="elements-tool_tips">Tool Tips</h3>
+
+        <dl class="enum">
+            <dt>tool_tip_control</dt>
+            <dd>
+                <p>
+                    Tool tips shown when hovering over tabs and buttons
+                </p>
+                <h4>Properties</h4>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        the <a href="themes.html#padding_margin">margin</a> around
+                        the tool tip text
+                    </dd>
+                </dl>
+            </dd>
+            <dt>tool_tip_label_control</dt>
+            <dd>
+                <p>
+                    Text shown in a tool tip
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+                <dl class="properties">
+                    <dt>color</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use for the text
+                    </dd>
+                </dl>
+            </dd>
+        </dl>
+
+        <h3 id="elements-hints">Hints</h3>
+
+        <p>
+            Hints are shown for "hazard" buttons when the user does not confirm
+            the button present within a certain timeframe. This can be observed
+            by clicking the <em>Discard</em> button for a file hunk once and
+            waiting. They are also used to call attention to the
+            <code>info_area</code> when a git command fails.
+        </p>
+
+        <p>
+            Hints are made up of two primary components, the
+            <code>hint_stem</code> and <code>hint_control</code>, which are
+            siblings.
+        </p>
+
+        <dl class="enum">
+            <dt>hint_stem</dt>
+            <dd>
+                <p>
+                    The stem that is used to connect the originating control
+                    to the <code>hint_control</code>. The following variants
+                    are used, based on which side of the originating control
+                    the hint is displayed:
+                </p>
+                <ul>
+                    <li><code>hint_stem bottom</code></li>
+                    <li><code>hint_stem left</code></li>
+                    <li><code>hint_stem top</code></li>
+                    <li><code>hint_stem right</code></li>
+                </ul>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+                <dl class="properties">
+                    <dt>content_margin</dt>
+                    <dd>
+                        the <a href="themes.html#padding_margin">margin</a> specifies the
+                        dimensions
+                    </dd>
+                </dl>
+            </dd>
+            <dt>hint_control</dt>
+            <dd>
+                <p>
+                    The primary container for the hint. Contains one or more
+                    <code>hint_label</code>s. The following variants are used,
+                    based on which side of the originating control the hint is
+                    displayed:
+                </p>
+                <ul>
+                    <li><code>hint_control bottom</code></li>
+                    <li><code>hint_control left</code></li>
+                    <li><code>hint_control top</code></li>
+                    <li><code>hint_control right</code></li>
+                </ul>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#layer_properties">layer properties</a>
+            </dd>
+            <dt>hint_label</dt>
+            <dd>
+                <p>
+                    One label is used for each line of text in a hint
+                </p>
+                <h4>Properties</h4>
+                <a class="properties" href="themes.html#font_properties">font properties</a>
+                <a class="properties" href="themes.html#shadow_properties">shadow properties</a>
+                <dl class="properties">
+                    <dt>color</dt>
+                    <dd>
+                        a <a href="themes.html#color_values">color
+                        value</a> to use for the text
+                    </dd>
+                </dl>
+            </dd>
+        </dl>
+    </section>
+
+    <section>
+        <h2 id="customization">Customization</h2>
+
+        <p>
+            Users can customize a theme by creating a file with new rules that
+            will be appended to the original theme definition.
+        </p>
+
+        <p>
+            To create a user-specific customization of a theme, create a new
+            file with the same filename as the theme, but save it in the
+            <span class="file">Packages/User/</span> directory.
+        </p>
+
+        <p>
+            For example, to customize the Merge theme, create a file named
+            <span class="file">Packages/User/Merge.sublime-theme</span>.
+            Adding the following rules to that file will increase the size of
+            the text in the location bar.
+        </p>
+
+        <pre><code class="language-js">[
+    {
+        "class": "location_bar_heading",
+        "font.size": 15,
+    },
+    {
+        "class": "location_bar_label",
+        "font.size": 14
+    }
+]</code></pre>
+    </section>
+    </div>
+
+    </section>
+    </main>
+    <footer>
+        <section>
+            © <a href="https://www.sublimehq.com">Sublime HQ Pty Ltd</a>
+
+            <p>Woollahra, Sydney.
+        </section>
+    </footer>
+    <!--[if lt IE 9]>
+    <script>
+        var logo_img = byid('logo').getElementsByTagName('IMG')[0]
+        logo_img.src = logo_img.src.replace('.svg', '.png')
+    </script>
+    <![endif]-->
+</body>
+</html>

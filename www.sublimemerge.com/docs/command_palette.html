@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Command Palette – Sublime Merge Documentation</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=480, user-scalable=yes">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i|Roboto+Mono:400,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../merge_v2.css">
+    <link rel="icon" href="https://www.sublimemerge.com/favicon.ico">
+    <link rel="icon" size="64x64" href="https://www.sublimemerge.com/favicon.ico">
+    <script type="text/javascript">
+    var plat = 'windows'
+    if (/Mac OS X/.test(navigator.userAgent))
+        plat = 'osx'
+    else if (/Linux|FreeBSD/.test(navigator.userAgent))
+        plat = 'linux'
+    var arch = /WOW64|Win64|x86_64/.test(navigator.userAgent) ? '64' : '32'
+    document.documentElement.className += ' plat_' + plat + ' arch_' + arch
+    function byid(x)
+    {
+        return document.getElementById(x)
+    }
+    var scale = 1
+    function res()
+    {
+        scale = window.devicePixelRatio >= 1.3 && document.body.clientWidth > 1024 ? 2 : 1
+        return scale == 2 ? '@2x' : ''
+    }
+    </script>
+    <!--[if lt IE 9]>
+    <script>
+        var els = ['header', 'nav', 'section', 'main', 'article', 'aside', 'footer']
+        for (var i = 0; i < els.length; ++i)
+            document.createElement(els[i]);
+    </script>
+    <style>
+        header, nav, section, main, article, aside, footer {
+            display: block;
+        }
+    </style>
+    <![endif]-->
+</head>
+<body class="docs">
+    <header>
+        <section>
+            <a id="logo" href="https://www.sublimemerge.com/">
+                <img src="../images/logo.svg" alt="Sublime Merge">
+            </a>
+            <nav>
+                <a href="https://www.sublimemerge.com/download">Download</a>
+                <a href="https://www.sublimehq.com/store">Buy</a>
+                <a href="https://www.sublimemerge.com/support">Support</a>
+                <span class="vr"></span>
+                <a href="https://www.sublimetext.com/blog/">News</a>
+                <a href="https://forum.sublimetext.com">Forum</a>
+            </nav>
+        </section>
+    </header>
+    <main>
+    <section>
+    <script src="prism.js"></script>
+
+    <h1><span>
+        <a href="index.html">Documentation</a>
+        Command Palette
+    </span></h1>
+
+    <div class="primary">
+    <section>
+        <p>
+            The commands available in the command palette of Sublime Merge are
+            defined by files ending in
+            <span class="file">.sublime-commands</span>. Commands files use
+            JSON, with the top-level structure being an array. Each command is a
+            JSON object.
+        </p>
+
+        <ul>
+            <li><a href="command_palette.html#example">Example</a></li>
+            <li><a href="command_palette.html#entries">Entries</a></li>
+            <li><a href="command_palette.html#user_entries">User Entries</a></li>
+        </ul>
+    </section>
+
+    <section class="wide">
+        <h2 id="example">Example</h2>
+
+        <p>
+            <em>The following is an example of the format of a
+            <span class="file">.sublime-commands</span> file.</em>
+        </p>
+
+        <pre><code class="language-js">[
+    {
+        "caption": "View: Toggle Side Bar",
+        "command": "toggle_side_bar"
+    },
+    {
+        "caption": "Checkout Branch…",
+        "command": "checkout_branch",
+    },
+    {
+        "caption": "Checkout Remote Branch…",
+        "command": "checkout_branch",
+        "args": { "local_refs": false, "remote_refs": true }
+    },
+]</code></pre>
+    </section>
+
+    <section>
+        <h2 id="entries">Entries</h2>
+
+        <p>
+            Each command palette entry requires two keys, <code>"caption"</code>
+            and <code>"command"</code>. To pass args to a command, the
+            <code>"args"</code> key may be specified.
+        </p>
+
+        <p>
+            The <code>"caption"</code> value must be a string, and specifies
+            the text to display in the command palette. The
+            <code>"command"</code> value must also be a string, and specifies
+            the name of the command to execute.
+        </p>
+
+        <p>
+            <em>An entry for viewing the tree of the selected commit</em>
+        </p>
+
+        <pre><code class="language-js">{
+    "caption": "View Tree",
+    "command": "view_tree"
+}</code></pre>
+
+        <p>
+            The <code>args</code> value must be an object, with each key being
+            the name of the arg to pass to the command.
+        </p>
+
+        <p>
+            <em>An entry to push the current branch, but prompting the user
+            to select options</em>
+        </p>
+
+        <pre><code class="language-js">{
+    "caption": "Push...",
+    "command": "push",
+    "args": {"prompt": true}
+}</code></pre>
+    </section>
+
+    <section>
+        <h2 id="user_entries">User Entries</h2>
+
+        <p>
+            Users can add entries to their command palette by creating a file
+            named <span class="file">Default.sublime-commands</span> in their
+            <span class="file">Packages/User/</span> directory.
+        </p>
+
+        <p>
+            For example, the following will create an entry to clean up
+            the current repo.
+        </p>
+
+        <pre><code class="language-js">[
+    {
+        "caption": "Cleanup Repo",
+        "command": "git",
+        "args": {"argv": ["gc"]}
+    }
+]</code></pre>
+    </section>
+    </div>
+
+    </section>
+    </main>
+    <footer>
+        <section>
+            © <a href="https://www.sublimehq.com">Sublime HQ Pty Ltd</a>
+
+            <p>Woollahra, Sydney.
+        </section>
+    </footer>
+    <!--[if lt IE 9]>
+    <script>
+        var logo_img = byid('logo').getElementsByTagName('IMG')[0]
+        logo_img.src = logo_img.src.replace('.svg', '.png')
+    </script>
+    <![endif]-->
+</body>
+</html>

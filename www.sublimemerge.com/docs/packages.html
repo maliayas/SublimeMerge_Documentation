@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Packages – Sublime Merge Documentation</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=480, user-scalable=yes">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i|Roboto+Mono:400,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../merge_v2.css">
+    <link rel="icon" href="https://www.sublimemerge.com/favicon.ico">
+    <link rel="icon" size="64x64" href="https://www.sublimemerge.com/favicon.ico">
+    <script type="text/javascript">
+    var plat = 'windows'
+    if (/Mac OS X/.test(navigator.userAgent))
+        plat = 'osx'
+    else if (/Linux|FreeBSD/.test(navigator.userAgent))
+        plat = 'linux'
+    var arch = /WOW64|Win64|x86_64/.test(navigator.userAgent) ? '64' : '32'
+    document.documentElement.className += ' plat_' + plat + ' arch_' + arch
+    function byid(x)
+    {
+        return document.getElementById(x)
+    }
+    var scale = 1
+    function res()
+    {
+        scale = window.devicePixelRatio >= 1.3 && document.body.clientWidth > 1024 ? 2 : 1
+        return scale == 2 ? '@2x' : ''
+    }
+    </script>
+    <!--[if lt IE 9]>
+    <script>
+        var els = ['header', 'nav', 'section', 'main', 'article', 'aside', 'footer']
+        for (var i = 0; i < els.length; ++i)
+            document.createElement(els[i]);
+    </script>
+    <style>
+        header, nav, section, main, article, aside, footer {
+            display: block;
+        }
+    </style>
+    <![endif]-->
+</head>
+<body class="docs">
+    <header>
+        <section>
+            <a id="logo" href="https://www.sublimemerge.com/">
+                <img src="../images/logo.svg" alt="Sublime Merge">
+            </a>
+            <nav>
+                <a href="https://www.sublimemerge.com/download">Download</a>
+                <a href="https://www.sublimehq.com/store">Buy</a>
+                <a href="https://www.sublimemerge.com/support">Support</a>
+                <span class="vr"></span>
+                <a href="https://www.sublimetext.com/blog/">News</a>
+                <a href="https://forum.sublimetext.com">Forum</a>
+            </nav>
+        </section>
+    </header>
+    <main>
+    <section>
+    <script src="prism.js"></script>
+
+    <h1><span>
+        <a href="index.html">Documentation</a>
+        Packages
+    </span></h1>
+
+    <div class="primary">
+    <section>
+        <p>
+            Packages in Sublime Merge are zip files with the extension
+            <span class="file">.sublime-package</span> or folders in user loose
+            packages directory. Sublime Merge comes with a number of packages
+            to provide themes, key bindings, menus and syntax definitions for
+            highlighting code. Sublime Merge will also load syntax definitions
+            from packages installed for
+            <a href="https://www.sublimetext.com">Sublime Text</a>.
+        </p>
+
+        <ul>
+            <li><a href="packages.html#package_directories">Package Directories</a></li>
+            <li><a href="packages.html#zipped_package_files">Zipped Package Files</a></li>
+            <li><a href="packages.html#installing_packages">Installing Packages</a></li>
+        </ul>
+    </section>
+
+    <section class="wide">
+        <h2 id="package_directories">Package Directories</h2>
+
+        <p>
+            Sublime Merge will load packages from three locations, each which
+            vary by the operating system.
+        </p>
+
+        <p>
+            Zipped packages are loaded from the
+            <span class="file">Packages/</span> folder that is a sibling to the
+            <span class="file">sublime_merge</span> executable. The location of
+            this will depend on where Sublime Merge is installed. The most
+            common location is listed below.
+        </p>
+
+        <p>
+            Zipped packages are also loaded from the
+            <span class="file">Installed Packages/</span> folder in the data
+            directory. The data directory for each platform is listed below.
+        </p>
+
+        <p>
+            Unzipped, or loose, package folders are loaded from the
+            <span class="file">Packages/</span> folder in the data
+            directory.
+        </p>
+
+        <h3>Windows</h3>
+        <dl class="enum">
+            <dt>Data directory</dt>
+            <dd><span class="file">%APPDATA%\Sublime Merge\</span></dd>
+            <dt>Default packages</dt>
+            <dd><span class="file">C:\Program Files\Sublime Merge\Packages\</span></dd>
+            <dt>User zipped packages</dt>
+            <dd><span class="file">%APPDATA%\Sublime Merge\Installed Packages\</span></dd>
+            <dt>User loose packages</dt>
+            <dd><span class="file">%APPDATA%\Sublime Merge\Packages\</span></dd>
+        </dl>
+
+        <h3>Mac</h3>
+        <dl class="enum">
+            <dt>Data directory</dt>
+            <dd><span class="file">~/Library/Application Support/Sublime Merge/</span></dd>
+            <dt>Default packages</dt>
+            <dd><span class="file">/Applications/Sublime Merge.app/Contents/MacOS/Packages/</span></dd>
+            <dt>User zipped packages</dt>
+            <dd><span class="file">~/Library/Application Support/Sublime Merge/Installed Packages/</span></dd>
+            <dt>User loose packages</dt>
+            <dd><span class="file">~/Library/Application Support/Sublime Merge/Packages/</span></dd>
+        </dl>
+
+        <h3>Linux</h3>
+        <dl class="enum">
+            <dt>Data directory</dt>
+            <dd><span class="file">~/.config/sublime_merge/</span></dd>
+            <dt>Default packages</dt>
+            <dd><span class="file">/opt/sublime_merge/Packages/</span></dd>
+            <dt>User zipped packages</dt>
+            <dd><span class="file">%~/.config/sublime_merge/Installed Packages/</span></dd>
+            <dt>User loose packages</dt>
+            <dd><span class="file">~/.config/sublime_merge/Packages/</span></dd>
+        </dl>
+    </section>
+
+    <section>
+        <h2 id="zipped_package_files">Zipped Package Files</h2>
+
+        <p>
+            Sometimes it is useful to look at the contents of the various
+            packages that are shipped with Sublime Merge to understand how
+            certain theme effects are accomplished, or the commands run by a
+            key binding or menu entry.
+        </p>
+
+        <p>
+            To do this, use the <a href="packages.html#package_directories">package
+            directories</a> section to find the <em>Default packages</em>
+            directory for your operating system. If Sublime Merge was installed
+            to a non-standard location, the directory will be different. Copy
+            the desired package to a suitable location, such as the desktop, and
+            use a zip program to extract the contents into a new folder.
+            Depending on the platform, it may need to change the file
+            extension from <span class="file">.sublime-package</span> to
+            <span class="file">.zip</span>.
+        </p>
+
+        <p>
+            Most of the packages primarily provide syntax definitions, but the
+            <span class="file">Default.sublime-package</span>,
+            <span class="file">Default - Merge.sublime-package</span>,
+            <span class="file">Color Scheme - Default.sublime-package</span> and
+            <span class="file">Theme - Merge.sublime-package</span> provide
+            all of the key bindings, menus, command palette definitions and
+            themes. The contents of the other packages are open source, and
+            can be more easily viewed online at
+            <a href="https://github.com/sublimehq/packages">https://github.com/sublimehq/packages</a>.
+        </p>
+    </section>
+
+    <section>
+        <h2 id="installing_packages">Installing Packages</h2>
+
+        <p>
+            Currently, Sublime Merge does not have a plugin API, nor a
+            built-in package manager. Sublime Merge will, however, automatically
+            load syntax definitions from Sublime Text, if installed. Thus for
+            some users, the simplest option will be to use
+            <a href="https://packagecontrol.io">Package Control</a> with
+            Sublime Text to install packages that provide syntax definitions.
+        </p>
+
+        <p>
+            If Sublime Text is not installed, it is possible to manually install
+            packages or package files into Sublime Merge. If using the list of
+            packages available via <a href="https://packagecontrol.io">Package
+            Control</a>, it may be desirable to copy only the syntax definitions
+            instead of installed entire packages. This is because the
+            preferences and themes from Sublime Text will be incompatible with
+            Sublime Merge in the majority of cases.
+        </p>
+
+        <p>
+            To install individual package files, find the package homepage via
+            the Package Control website. In the majority of cases this will be
+            the GitHub or BitBucket repository, and when not the homepage often
+            includes a link to the source. Then download individual files into
+            a new folder in the <a href="packages.html#package_directories"><em>User loose
+            packages</em></a> directory.
+        </p>
+    </section>
+    </div>
+
+    </section>
+    </main>
+    <footer>
+        <section>
+            © <a href="https://www.sublimehq.com">Sublime HQ Pty Ltd</a>
+
+            <p>Woollahra, Sydney.
+        </section>
+    </footer>
+    <!--[if lt IE 9]>
+    <script>
+        var logo_img = byid('logo').getElementsByTagName('IMG')[0]
+        logo_img.src = logo_img.src.replace('.svg', '.png')
+    </script>
+    <![endif]-->
+</body>
+</html>
