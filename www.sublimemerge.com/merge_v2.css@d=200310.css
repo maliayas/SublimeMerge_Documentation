@@ -14,16 +14,24 @@ main {
     background-color: #FFFFFF;
     overflow: hidden;
 }
+main > section {
+    position: relative;
+}
 a {
     color: #6690CC;
 }
 a:hover {
     color: #4075BF;
 }
+a:not([href]),
+a:not([href]):hover {
+    color: inherit;
+}
 p {
     margin: .6em 0;
 }
-ul {
+ul,
+ol {
     padding-left: 1.8em;
 }
 table {
@@ -53,33 +61,31 @@ pre > code {
 tt,
 code,
 span.setting,
-span.command {
+span.command,
+span.key,
+span.property,
+span.attribute,
+span.element,
+span.method,
+span.attribute {
     font-family: "Roboto Mono", monospace;
     font-size: 14px;
     background-color: #F3F3F3;
     border-radius: 2px;
     padding: 1px 5px;
 }
-table.selectors {
-    width: 100%;
-}
-table.selectors td,
-table.selectors th {
-    padding: 5px 3px;
-    line-height: 26px;
-    border-bottom: 1px solid #DDDDDD;
-}
-table.selectors td.scope_name {
-    width: 35%;
-}
-table.selectors td.selector {
-    width: 35%;
-}
-table.selectors td.scope_name,
-table.selectors td.selector {
-    padding-right: 20px;
+span.parameter {
     font-family: "Roboto Mono", monospace;
     font-size: 14px;
+    font-weight: bold;
+}
+span.data-type {
+    font-style: italic;
+    font-family: "Roboto Mono", monospace;
+    font-size: 14px;
+    background-color: #F3F3F3;
+    border-radius: 2px;
+    padding: 1px 5px 1px 4px;
 }
 input[type=text],
 input[type=email],
@@ -131,7 +137,7 @@ h1 {
     margin-bottom: .5em;
     margin-top: .7em;
 }
-h1 span {
+h1 > span {
     padding: 2px 10px 3px;
     background-color: rgba(0, 0, 0, 0.05);
     position: relative;
@@ -164,8 +170,15 @@ h2 a:hover {
 h1 code,
 h2 code,
 h3 code,
-h4 code {
+h4 code,
+h5 code,
+h1 span.key,
+h2 span.key,
+h3 span.key,
+h4 span.key,
+h5 span.key {
     font-size: 1em;
+    text-transform: none;
 }
 h3 {
     font-size: 1.2em;
@@ -182,6 +195,16 @@ h4 {
     text-transform: uppercase;
     letter-spacing: .5px;
     font-weight: normal;
+    margin-top: .8em;
+    margin-bottom: .5em;
+}
+h5 {
+    font-size: 1.0em;
+    color: #888888;
+    letter-spacing: .5px;
+    font-weight: normal;
+    margin-top: .8em;
+    margin-bottom: .5em;
 }
 header > section,
 footer > section,
@@ -467,13 +490,16 @@ html.plat_osx span.keys.pc {
 }
 p.note {
     color: #FFFFFF;
-    padding: .5em 0 .5em 1em;
+    padding: .5em .8em .5em .8em;
     border-radius: 3px;
     background-color: #7A94B8;
     font-style: italic;
 }
 p.note a {
     color: #FFFFFF;
+}
+p.note span.setting {
+    background-color: rgba(255, 255, 255, 0.3);
 }
 div#masthead {
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#A9C8C8', endColorstr='#A8B3C2')";
@@ -1132,14 +1158,45 @@ body.docs:not(.top-level) h1 span {
     padding-top: 18px;
     min-width: 125px;
 }
-body.docs h1 span a {
+body.docs h1 > span > nav {
     font-size: .85rem;
     line-height: 1.2rem;
     top: 4px;
     left: 10px;
     color: #888888;
     position: absolute;
+    padding-left: 0;
+    transition: padding-left 100ms 50ms;
+}
+body.docs h1 > span > nav > a {
     text-transform: uppercase;
+    display: inline;
+    color: #888888;
+}
+body.docs h1 > span > nav > a:hover {
+    color: #666666;
+}
+body.docs h1 > span > nav > a.divider {
+    margin-left: 1em;
+    border-left: 1px solid #BBBBBB;
+}
+body.docs h1 > span > nav > a.jump {
+    margin-left: 1em;
+}
+body.docs h1 > span > nav::before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 18px;
+    height: 16px;
+    background-image: url(favicon.ico);
+    background-repeat: no-repeat;
+    background-position: left 0 top 2px;
+    background-size: 16px auto;
+    opacity: 0;
+    transition: opacity 50ms 0ms;
 }
 body.docs.dev-build h1 span {
     min-width: 200px;
@@ -1159,14 +1216,21 @@ body.docs main > section > section.wide {
     overflow-x: auto;
 }
 body.docs span.new,
-article.changelog span.new {
-    background-color: #F09642;
+article.changelog span.new,
+body.docs span.updated {
     color: white;
     padding: 0 5px 0;
     border-radius: 2px;
     font-size: .8em;
     display: inline-block;
     margin-left: .8em;
+}
+body.docs span.new,
+article.changelog span.new {
+    background-color: #F09642;
+}
+body.docs span.updated {
+    background-color: #92C3C3;
 }
 article.changelog h3 span.new {
     font-size: .8rem;
@@ -1176,11 +1240,11 @@ article.changelog h3 span.new {
 }
 div.column {
     float: left;
-    margin-right: 4em;
+    margin-right: 3em;
     margin-bottom: 1em;
 }
 div.column:last-child {
-    margin-left: 0;
+    margin-right: 0;
 }
 div.column h3 {
     margin-top: 0;
@@ -1236,39 +1300,419 @@ table.api td {
     line-height: 1.4;
     border-bottom: solid 1px #DDDDDD;
 }
+table.api td.tags,
+table.api th.tags {
+    width: 65px;
+    text-align: right;
+}
+table.enum {
+    width: 100%;
+    margin: 15px 0 15px 10px;
+}
+table.enum td,
+table.enum th {
+    padding: 5px 3px;
+    line-height: 26px;
+    border-bottom: 1px solid #DDDDDD;
+}
+table.enum th {
+    font-weight: bold;
+}
+table.selectors td.scope_name {
+    width: 35%;
+}
+table.selectors td.selector {
+    width: 35%;
+}
+table.selectors td.scope_name,
+table.selectors td.selector {
+    padding-right: 20px;
+    font-family: "Roboto Mono", monospace;
+    font-size: 14px;
+}
+div.added {
+    font-style: italic;
+    color: #999999;
+}
+div.versions {
+    display: none;
+    position: absolute;
+    top: 11px;
+    right: 0;
+}
+div.versions.enabled {
+    display: block;
+}
+div.versions.enabled.pinned {
+    position: fixed;
+    top: 7px;
+    right: calc(((100vw - (100vw - 100%) - 1140px) / 2));
+    z-index: 3;
+}
+body.docs h1.pinned {
+    position: relative;
+    z-index: 2;
+}
+body.docs h1.pinned div.background {
+    background: rgba(241, 241, 241, 0.929);
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+body.docs h1.pinned > span {
+    background-color: transparent;
+    position: fixed;
+    top: 0;
+    margin-top: 0;
+    left: calc(((100vw - (100vw - 100%) - 1140px) / 2) - 10px);
+}
+body.docs h1.pinned > span > nav {
+    padding-left: 18px;
+    transition: padding-left 100ms 0ms;
+    min-width: 250px;
+}
+body.docs h1.pinned > span > nav::before {
+    transition: opacity 200ms 100ms;
+    opacity: 1.0;
+}
+@media only screen and (max-width: 1240px) {
+    body.docs h1.pinned > span {
+        left: calc(((100vw - (100vw - 100%) - 1140px) / 2) + 10px);
+    }
+    div.versions.enabled.pinned {
+        right: calc(((100vw - (100vw - 100%) - 1140px) / 2) + 20px);
+    }
+}
+@media only screen and (max-width: 1240px) {
+    div.versions {
+        right: 20px;
+    }
+}
+@media only screen and (max-width: 1140px) {
+    body.docs h1.pinned > span {
+        left: 10px;
+    }
+    div.versions.enabled.pinned {
+        right: 20px;
+    }
+}
+@media only screen and (max-width: 700px) {
+    body.docs h1 > span {
+        max-width: calc(100vw - (100vw - 100%) - 60px);
+    }
+    div.versions.enabled {
+        text-align: right;
+    }
+    div.versions.enabled span.expanded {
+        display: none;
+    }
+    div.versions.enabled a.ver-sel {
+        display: none;
+        float: right;
+        clear: right;
+        line-height: 1.2em;
+        margin-top: 3px;
+    }
+    div.versions.enabled.expanded a.ver-sel,
+    div.versions.enabled a.ver-sel.active {
+        display: block;
+    }
+}
+section.filtered,
+table.api tr.filtered,
+table.api dt.filtered,
+table.api dd.filtered,
+li.filtered,
+dt.filtered,
+dd.filtered,
+div.filtered,
+span.filtered,
+pre.filtered,
+ul.filtered,
+p.filtered {
+    opacity: .4;
+}
+span.outlined {
+    border-radius: 3px;
+    background-color: #EEEEEE;
+    padding-bottom: 2px;
+    box-shadow: 2px 0 0 1px #EEEEEE, -2px 0 0 1px #EEEEEE;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+div.alternate-dir {
+    background-color: #F3F3F3;
+    border: 1px solid #DDDDDD;
+    border-radius: 3px;
+    padding: 10px 15px 15px;
+    font-style: italic;
+    color: #777777;
+}
+div.alternate-dir p {
+    margin-top: 0;
+}
+div.alternate-dir ul {
+    margin-bottom: 0;
+}
+div.versions a.ver-sel {
+    color: white;
+    background-color: #999999;
+    border-radius: 3px;
+    padding: 1px 8px 2px;
+    text-decoration: none;
+}
+div.versions a.ver-sel:hover {
+    background-color: #777777;
+}
+div.versions a.ver-sel.active {
+    background-color: #F09642;
+}
+span.build,
+span.python,
+span.proprietary,
+span.platform,
+span.required {
+    display: inline-block;
+    line-height: 1.2;
+    color: white;
+    border-radius: 3px;
+    font-size: 13px;
+    padding: 1px 3px 1px;
+    font-style: normal;
+    text-transform: uppercase;
+    position: relative;
+    top: -1px;
+}
+h2 span.build,
+h2 span.python,
+h2 span.proprietary,
+h2 span.platform,
+h3 span.build,
+h3 span.python,
+h3 span.proprietary,
+h3 span.platform,
+h4 span.build,
+h4 span.python,
+h4 span.proprietary,
+h4 span.platform {
+    margin-left: 8px;
+    position: relative;
+    top: -2px;
+}
+h4 span.build,
+h4 span.python,
+h4 span.proprietary,
+h4 span.platform {
+    top: -1px;
+}
+span.build {
+    background-color: #92C3C3;
+}
+span.python {
+    background-color: #876BC7;
+}
+span.python.filtered {
+    display: none;
+}
+span.platform {
+    background-color: #4285F0;
+}
+span.proprietary {
+    background-color: #E0876C;
+}
+span.build.removed {
+    display: none;
+}
+.filtered span.build.removed {
+    display: inline-block;
+}
+.filtered.hide_on_filter {
+    display: none;
+}
+.tab.filtered,
+.tab-content.filtered {
+    display: none;
+}
+.switchers {
+    display: none;
+}
+.switchers.enabled {
+    display: block;
+}
+pre.cli {
+    white-space: pre-wrap;
+}
+table.api dl.parameters dt {
+    font-family: "Roboto Mono", monospace;
+}
+table.api dl.parameters dt span.build {
+    font-family: "Lato", Arial, sans-serif;
+}
+table.api dl.parameters dd {
+    margin-left: 2em;
+}
+div.pre_constructed,
+div.custom_built {
+    float: left;
+    width: 48%;
+}
+div.pre_constructed {
+    margin-right: 4%;
+}
+table.api td.rtn {
+    min-width: 100px;
+}
 table.api td.mth,
 table.api td.rtn {
     font-family: "Roboto Mono", monospace;
 }
+table.api td.rtn {
+    font-size: .9em;
+    color: #888888;
+}
+table.api td.rtn > span.data-type,
+table.api td.rtn > code {
+    color: #555555;
+}
+table.api td.rtn > em {
+    display: block;
+    font-size: .8em;
+    padding-left: 4px;
+}
+table.api td.mth {
+    padding-left: 24px;
+    text-indent: -18px;
+}
 table.api td.dsc tt,
-table.api td.dsc code {
-    font-size: 14px;
+table.api td.dsc code,
+table.api td.dsc span.setting,
+table.api td.dsc span.command,
+table.api td.dsc span.key,
+table.api td.dsc span.property,
+table.api td.dsc span.attribute,
+table.api td.dsc span.element,
+table.api td.dsc span.parameter,
+table.api td.dsc span.method,
+table.api td.dsc span.attribute,
+table.api td.dsc span.data-type,
+table.api td.dsc span.file,
+table.api td.rtn code,
+table.api td.rtn span.data-type {
+    font-size: .9em;
 }
 table.api td.dsc p:first-child {
     margin-top: 0;
 }
 dl.enum {
-    margin-left: 20px;
+    margin-left: 10px;
     max-width: 800px;
     line-height: 1.4;
 }
 a.properties,
 a.attributes {
     display: block;
-    margin: 5px 0 0 20px;
+    margin: 5px 0 0 10px;
 }
-dl.enum.properties,
-dl.enum.attributes,
-dl.enum.settings {
-    background-color: #FBFBFB;
-    border: 1px solid #EEEEEE;
-    padding: 12px 18px;
+dt > span + span.data-type {
+    display: inline-block;
+    margin-left: .5em;
+    opacity: .7;
+}
+dt span.required {
+    margin-left: .5em;
+    font-style: normal;
+    background-color: #4DB352;
+}
+table.kinds th {
+    font-weight: bold;
+}
+table.kinds th.icon {
+    min-width: 2.5em;
+}
+table.kinds td {
+    vertical-align: middle;
+    line-height: 1.2;
+}
+span.kind_container {
+    display: inline-block;
+    background-color: #3E474F;
+    padding: 0;
+    cursor: default;
+}
+span.kind {
+    display: block;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0 5px 3px;
+    min-width: 1em;
+    text-align: center;
+}
+table.completions_popup {
+    min-width: 300px;
+    line-height: 1.2;
+}
+table.completions_popup td,
+table.completions_popup th {
+    padding: 0;
+}
+table.completions_popup td.help {
+    vertical-align: middle;
+    padding: 0 5px;
+}
+table.completions_popup tr.selected td.trigger,
+table.completions_popup tr.selected td.annotation {
+    background-color: #656C72;
+}
+table.completions_popup td.trigger {
+    min-width: 150px;
+    padding: 2px 5px;
+    font-family: "Roboto Mono", monospace;
+    font-size: .9em;
+    color: #D8DEE9;
+    vertical-align: middle;
+    background-color: #3E474F;
+}
+table.completions_popup td.annotation {
+    text-align: right;
+    font-style: italic;
+    padding: 0 8px;
+    font-family: "Roboto Mono", monospace;
+    font-size: .9em;
+    color: #D8DEE9AA;
+    vertical-align: middle;
+    background-color: #3E474F;
+}
+table.completions_popup td.details {
+    font-size: .8em;
+    padding: 6px 5px 5px;
+    background-color: #2F373F;
+}
+table.completions_popup td.details span.kind_name {
+    color: #D8DEE9;
+    border: 1px solid #6699CC;
+    border-radius: 2px;
+    padding: 0 3px;
+    margin-right: 8px;
+    font-style: italic;
+    line-height: 1.0;
+}
+table.completions_popup td.details a {
+    color: #6699CC;
+    text-decoration: underline;
+}
+dl.enum dd p.properties {
+    margin: .5em 0 .5em 10px;
+}
+dl.enum.settings,
+dl.enum.keys {
+    margin-left: 10px;
 }
 dl.properties dd > code,
 dl.attributes dd > code,
 dl.enum.properties dd > code,
-dl.enum.attributes dd > code,
-dl.enum.settings dd > code {
+dl.enum.attributes dd > code {
     background-color: #ECECEC;
 }
 dl.enum::after,
@@ -1281,10 +1725,17 @@ dl.enum dt {
     display: block;
     margin: 12px 0 8px 0;
     background: 0;
-    border-bottom: 1px solid #CCCCCC;
     float: left;
     clear: left;
     color: #222222;
+}
+dl.enum dd dl > dt > span.property,
+dl.enum dd dl > dt > span.attribute,
+dl.enum dd dl > dt > span.element,
+dl.enum dd dl > dt > span.setting {
+    font-family: "Roboto Mono", monospace;
+    font-size: 14px;
+    border-bottom: 1px solid #CCCCCC;
 }
 dl.enum dt:first-child,
 dl.enum dt + dt {
@@ -1299,19 +1750,26 @@ dl.enum dd code em {
 }
 dl.enum dd {
     clear: left;
-    margin-left: 25px;
+    margin-left: 5px;
+    padding-left: 15px;
+}
+dl.enum > dd {
+    border-left: 1px solid #DDDDDD;
 }
 dl.enum dd p:first-child {
-    margin-top: 0;
+    padding-top: 5px;
 }
 dl.enum dd p,
-dl.enum dd ul {
+dl.enum dd ul,
+dl.enum dd ol {
     margin: .5em 0;
 }
 dl.enum dd h4 {
     margin: .5em 0 0 0;
     font-weight: normal;
     font-style: italic;
+    font-size: 16px;
+    text-transform: none;
 }
 dl.enum dd div.example {
     font-style: italic;
@@ -1319,10 +1777,9 @@ dl.enum dd div.example {
     padding-left: 10px;
 }
 dl.enum dd dl {
-    margin: 10px 0 5px 20px;
+    margin: 5px 0 5px 10px;
     background-color: #FBFBFB;
-    border: 1px solid #EEEEEE;
-    padding: 12px 18px;
+    padding: 10px;
 }
 dl.enum dd dl dt {
     margin: 5px 0 0 0;
@@ -1418,6 +1875,14 @@ table.controls td.menu,
 table.controls td.palette {
     vertical-align: middle;
 }
+section.modules div.column {
+    min-width: 150px;
+}
+section.modules::after {
+    content: "";
+    display: table;
+    clear: both;
+}
 @font-face {
     font-family: "Lato";
     font-style: italic;
@@ -1453,6 +1918,17 @@ table.controls td.palette {
     font-style: normal;
     font-weight: 700;
     src: local("Roboto Mono Bold"), local("RobotoMono-Bold"), url("fonts/roboto-mono-v7-latin-700.woff2") format("woff2"), url("fonts/roboto-mono-v7-latin-700.woff") format("woff");
+}
+body.docs h1 > span > a {
+    font-size: .85rem;
+    line-height: 1.2rem;
+    top: 4px;
+    left: 10px;
+    color: #888888;
+    position: absolute;
+    padding-left: 0;
+    transition: padding-left 100ms 50ms;
+    text-transform: uppercase;
 }
 .token.comment,
 .token.prolog,
