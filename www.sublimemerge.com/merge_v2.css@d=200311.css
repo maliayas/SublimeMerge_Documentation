@@ -1431,7 +1431,10 @@ div.filtered,
 span.filtered,
 pre.filtered,
 ul.filtered,
-p.filtered {
+p.filtered,
+h2.filtered,
+h3.filtered,
+h4.filtered {
     opacity: .4;
 }
 span.outlined {
@@ -1701,6 +1704,24 @@ table.completions_popup td.details span.kind_name {
 table.completions_popup td.details a {
     color: #6699CC;
     text-decoration: underline;
+}
+ol.tuple {
+    list-style-type: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+ol.tuple > li:first-child {
+    counter-reset: tuplecounter -1;
+}
+ol.tuple > li {
+    counter-increment: tuplecounter;
+}
+ol.tuple > li::before {
+    opacity: .8;
+    content: counter(tuplecounter) ") ";
+    text-indent: .5em;
+    float: left;
+    width: 2em;
 }
 dl.enum dd p.properties {
     margin: .5em 0 .5em 10px;
