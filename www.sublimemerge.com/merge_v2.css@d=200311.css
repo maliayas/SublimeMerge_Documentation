@@ -2361,3 +2361,14 @@ div.download a.other_platforms {
 div#masthead div.download a.other_platforms {
     opacity: .75;
 }
+.footer_start {
+    display: block;
+    float: left;
+    width: 50%;
+}
+.footer_end {
+    display: block;
+    float: left;
+    width: 50%;
+    text-align: end;
+}
