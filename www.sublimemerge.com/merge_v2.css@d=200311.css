@@ -2087,6 +2087,12 @@ section.screencast-meta {
     color: #444444;
     margin-bottom: 16px;
 }
+a {
+    color: #1859B5;
+}
+a:hover {
+    color: #244B82;
+}
 .download .button span a {
     background-color: #2696A8;
 }
@@ -2136,6 +2142,70 @@ div.download .button {
 div.theme-selector {
     position: absolute;
     top: -10px;
+}
+img.social_icon {
+    position: absolute;
+    right: 1rem;
+    width: 1rem;
+    height: 1rem;
+}
+img.profile_picture {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 1px 1px 5px #3A3A3A4D;
+    margin: 0 auto 8px auto;
+}
+.review {
+    display: inline-block;
+    position: relative;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 1px 1px 5px #3A3A3A4D;
+    padding: 1em;
+}
+.review_header {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+a.reviewer {
+    text-decoration: none;
+    color: #888888;
+    font-size: .8rem;
+}
+.review_body {
+    display: flex;
+    flex-direction: column;
+    color: #555555;
+}
+.twitter_follow i {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: transparent 0 0 no-repeat;
+    background-image: none;
+    background-image: url("icons/twitter.svg");
+}
+.twitter_follow a:hover {
+    background-color: #0C7ABF;
+    color: white;
+}
+.twitter_follow a {
+    display: inline-block;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1B95E0;
+    color: white;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: .8rem;
+    text-decoration: none;
 }
 @media only screen and (max-width: 820px) {
     div.theme-selector {
