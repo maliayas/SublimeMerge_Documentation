@@ -1,0 +1,599 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Getting Started – Sublime Merge Documentation</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=480, user-scalable=yes">
+    <link rel="stylesheet" type="text/css" href="../merge_v2.css@d=201027.css">
+    <link rel="icon" href="../favicon.ico">
+    <link rel="icon" size="64x64" href="../favicon.ico">
+    <script type="text/javascript">
+    var plat = 'windows'
+    if (/Mac OS X/.test(navigator.userAgent))
+        plat = 'osx'
+    else if (/Linux|FreeBSD/.test(navigator.userAgent))
+        plat = 'linux'
+    var arch = /WOW64|Win64|x86_64/.test(navigator.userAgent) ? '64' : '32'
+    document.documentElement.className += ' plat_' + plat + ' arch_' + arch
+    function byid(x)
+    {
+        return document.getElementById(x)
+    }
+    var scale = 1
+    function res()
+    {
+        scale = window.devicePixelRatio >= 1.3 ? 2 : 1
+        return scale == 2 ? '@2x' : ''
+    }
+    </script>
+    <!--[if lt IE 9]>
+    <script>
+        var els = ['header', 'nav', 'section', 'main', 'article', 'aside', 'footer']
+        for (var i = 0; i < els.length; ++i)
+            document.createElement(els[i]);
+    </script>
+    <style>
+        header, nav, section, main, article, aside, footer {
+            display: block;
+        }
+    </style>
+    <![endif]-->
+</head>
+<body class="docs">
+    <header>
+        <section>
+            <a id="logo" href="https://www.sublimemerge.com/">
+                <img src="../images/logo.svg" alt="Sublime Merge">
+            </a>
+            <nav>
+                <a href="https://www.sublimemerge.com/download">Download</a>
+                <a href="https://www.sublimehq.com/store/merge">Buy</a>
+                <a href="https://www.sublimemerge.com/support">Support</a>
+                <span class="vr"></span>
+                <a href="https://www.sublimetext.com/blog/">News</a>
+                <a href="https://forum.sublimetext.com">Forum</a>
+            </nav>
+        </section>
+    </header>
+    <style>
+    img.screenshot {
+        margin: 1em 0 0;
+        filter: drop-shadow(3px 3px 5px #9998);
+    }
+
+    p.caption-sm {
+        margin-top: 0.5em;
+        color: #999;
+        font-style: italic;
+    }
+    span.conflict
+    {
+        background-color: #4f424a;
+        color: #ea5f66;
+        border-radius: 2px;
+        padding: 1px 5px;
+    }
+    em
+    {
+        color: #888;
+    }
+    </style>
+
+    <main>
+    <section>
+    <script src="prism.js"></script>
+
+    <h1><span>
+        <a href="index.html">Documentation</a>
+        Getting Started with Sublime Merge
+    </span></h1>
+
+    <div class="primary">
+    <section>
+        <p>
+        	Thank you for using Sublime Merge!
+        </p>
+        <p>
+            Getting started with Sublime Merge is simple. In this guide you'll be shown all the steps you need to get started.
+        </p>
+        <p>
+            If you haven't already downloaded Sublime Merge, visit the <a href="https://www.sublimemerge.com/download">download page</a>.
+        </p>
+        <ul>
+            <li><a href="getting_started.html#cloning_existing_repository">Cloning an existing repository</a></li>
+            <li><a href="getting_started.html#create_new_repository">Creating a new repository</a></li>
+            <li><a href="getting_started.html#understanding_the_interface">Understanding the interface</a></li>
+            <li><a href="getting_started.html#command_palette">Using the command palette</a></li>
+            <li><a href="getting_started.html#committing">Creating a commit</a></li>
+            <li><a href="getting_started.html#editing_commits">Fixing and editing commits</a></li>
+            <li><a href="getting_started.html#branches">Creating a branch</a></li>
+            <li><a href="getting_started.html#pushing_and_pulling">Pushing and pulling</a></li>
+            <li><a href="getting_started.html#merging">Merging branches</a></li>
+            <li><a href="getting_started.html#resolving_merge_conflicts">Resolving merge conflicts</a></li>
+            <li><a href="getting_started.html#adding_remotes">Adding remotes</a></li>
+            <li><a href="getting_started.html#setting_upstream">Setting the upstream</a></li>
+            <li><a href="getting_started.html#authentication">Remote authentication</a></li>
+        </ul>
+    </section>
+
+    <section class="wide">
+        <h2 id="cloning_existing_repository">Cloning an existing repository</h2>
+        <p>
+            The first step when using Git is usually cloning an existing remote repository. This process will create a copy of a remote repository on your local machine so you can begin making changes. Alternatively, if you're starting a new project, skip to <a href="getting_started.html#create_new_repository">Creating a new repository</a>.
+        </p>
+        <h4>Things you'll need</h4>
+        <ul>
+            <li>The remote repository URL<br><em>Example URL: <tt>https://github.com/sublimehq/Packages.git</tt></em></li>
+            <li>(Optional) the authentication information for the remote repository<br><em>(likely the username and password you use to authenticate with the remote service)</em></li>
+        </ul>
+        <h4>Steps to clone a repository</h4>
+        <ol>
+        	<li>Navigate to the clone page via <span class="menu">File <img src="../images/right.svg" alt="▶"> Clone Repository…</span>.<br><em>Sublime Merge automatically opens this page on first run (shown below)</em></li>
+        	<li>Paste the remote repository URL into the <span class="menu">Source URL</span> input</li>
+        	<li>Set the local repository path using the <span class="menu">Destination Path</span> input<br><em>This is where the repository will be cloned to</em></li>
+        	<li>(Optional) Change the name of the local repository using the <span class="menu">Repository Name</span> input<br><em>This is the name of the repository (stored as a folder on disk)</em></li>
+        	<li>Select the <span class="menu">Clone</span> button</li>
+        </ol>
+        <p>Once the clone has completed, the repository will open automatically in Sublime Merge.</p>
+        <p>You can now skip to <a href="getting_started.html#understanding_the_interface">Understanding the interface</a>.</p>
+        <a href="https://www.sublimemerge.com"><img src="../images/clone_page.png" class="screenshot" width="700" height="360"></a>
+        <p class="caption-sm">Welcome Page</p>
+    </section>
+    <section class="wide">
+        <h2 id="create_new_repository">Creating a new repository</h2>
+        <p>
+            If you're starting a new project, you'll likely instead want to initialize a new Git repository instead.
+        </p>
+        <h4>Steps to create a new repository</h4>
+        <ol>
+            <li>Open Sublime Merge, and select the <span class="menu">New Repository</span> button</li>
+            <li>Select the folder you wish to initialize as a Git repository</li>
+        </ol>
+        <p>Once you've done this, the new repository will open automatically in Sublime Merge.</p>
+        <a href="https://www.sublimemerge.com"><img src="../images/clone_page.png" class="screenshot" width="700" height="360"></a>
+        <p class="caption-sm">Welcome Page</p>
+    </section>
+
+    <section class="wide">
+        <h2 id="understanding_the_interface">Understanding the interface</h2>
+        <p>
+            The Sublime Merge interface consists of two main sections - the <span class="menu">Overview</span> and the <span class="menu">Details</span> section.
+        </p>
+        <h3>Overview Section</h3>
+        <p>
+            The overview section is designed to show a summary of the repository. <br>It contains the <span class="menu">Locations</span> column, the <span class="menu">Commits</span> column, and the <span class="menu">Files</span> column - each of which will be described below.
+        </p>
+        <a href="https://www.sublimemerge.com"><img src="../images/overview.png" class="screenshot" width="650" height="96"></a>
+        <p class="caption-sm">Overview Section</p>
+        <h4>Locations</h4>
+        <p>
+            The <span class="menu">Locations</span> column displays all branches, remotes, tags, stashes, and submodules contained in the repository.
+        </p>
+        <p>
+            Each item can be selected to reveal its location in the commit graph <em>(excluding submodules)</em>. Each item also has a context menu which displays common actions.
+        </p>
+        <h4>Commits</h4>
+        <p>
+            The <span class="menu">Commits</span> column displays a graph of all commits contained in the repository.
+            The commit graph is drawn as a series of commit summaries connected via coloured lines <em>(indicating the topology of the commits)</em>.
+        </p>
+        <p>
+            Each commit summary contains useful information such as the commit message and author, along with any associated branches.
+            The context menu of a commit summary also contains common actions.
+        </p>
+        <a href="https://www.sublimemerge.com"><img src="../images/commit_summary.png" class="screenshot" width="389" height="45"></a>
+        <p class="caption-sm">Commit summary</p>
+        <p>
+            When a commit summary is selected, the details of the selected commit are displayed in the <span class="menu">Details</span> section.
+        </p>
+        <p>
+            Multiple commits can be selected to perform bulk operations such as <code>squashing</code> or <code>dropping</code> commits.
+            If multiple commits are selected, a diff of the first and last commit will also be displayed in the <span class="menu">Details</span> section.
+        </p>
+        <h4>Files</h4>
+        <p>
+            The <span class="menu">Files</span> column displays a list of all files associated with the current selection.
+        </p>
+        <p>
+            If no commits are selected, the files list will show all <span class="menu">Unmerged</span>, <span class="menu">Modified</span>, <span class="menu">Untracked</span>, and <span class="menu">Staged</span> files.<br>
+            If a commit is selected, the files list will show all changed files in the selected commit.
+        </p>
+        <h3>Details Section</h3>
+        <p>
+            The details section displays a detailed view of the selected item in the commit graph.
+        </p>
+        <h4>Pending changes</h4>
+        <p>
+            When no commits are selected in the commit graph, the current state of the working directory and index is shown in the details section.
+            From here you can prepare and create new commits.
+        </p>
+        <p>
+            A diff is displayed for each <span class="menu">Unmerged</span>, <span class="menu">Modified</span>, <span class="menu">Untracked</span>, and <span class="menu">Staged</span> file. Each file has an associated tab which can be selected to view the changes to the individual file.
+        </p>
+        <a href="https://www.sublimemerge.com"><img src="../images/file_tabs.png" class="screenshot"  width="400" height="100"></a>
+        <p class="caption-sm">Commit dialog - file tabs</p>
+        <p>
+            To create a new commit, see <a href="getting_started.html#committing">Creating a commit</a>.
+        </p>
+        <h4>Commit details</h4>
+        <p>
+            When a commit is selected in the commit graph, the details of the selected commit are shown in the details section.
+        </p>
+        <p>
+            Commit metadata such as the commit message and author is displayed at the top of this section.
+        </p>
+        <p>
+            Below the commit metadata is a list of all changed files and their associated diffs <em>(changes)</em>.
+        </p>
+        <a href="https://www.sublimemerge.com"><img src="../images/commit_details.png" class="screenshot"  width="570" height="480"></a>
+        <p class="caption-sm">Commit details</p>
+    </section>
+
+    <section class="wide">
+        <h2 id="command_palette">Using the command palette</h2>
+        <p>
+            The command palette is a quick way to access a vast selection of commands available to you in Sublime Merge.<br><em>For example, renaming a branch or navigating to a tag</em>
+        </p>
+        <p>
+            You can open the command palette via <span class="menu">Tools <img src="../images/right.svg" alt="▶"> Command palette…</span> or via <span class="keys"><b>Ctrl + p</b></span> (<span class="keys"><b>Cmd + p</b></span> for MacOS).
+        </p>
+        <p>
+            The command palette presents a list of commands which can be filtered by typing portions of the command name you're looking for.
+        </p>
+        <a href="https://www.sublimemerge.com"><img src="../images/command_palette.png" class="screenshot"  width="960" height="362"></a>
+        <p class="caption-sm">Command Palette</p>
+        <p>
+            You can also add you're own custom commands to the command palette. <em>(See <a href="command_palette.html">customizing the command palette</a>)</em>
+        </p>
+    </section>
+
+    <section class="wide">
+        <h2 id="committing">Creating a commit</h2>
+        <p>
+            Once you have made changes to any local files in your repository, your changes appear in the <span class="menu">Pending changes</span> section.
+        </p>
+        <p>
+			Modified files appear in the <span class="menu">Working Directory</span> section, and new files appear in the <span class="menu">Untracked Files</span> section. To commit new changes to the local repository, you'll first need to stage the changes.
+        </p>
+        <h4>Staging Changes using Sublime Merge</h4>
+        <p>
+        	Staging an entire file: select the <span class="menu">Stage file</span> button at the top of the file<br>
+            Staging an entire hunk: select the <span class="menu">Stage hunk</span> button at the top of the file<br>
+            Staging individual lines: select the individual lines you wish to stage and select <span class="menu">Stage lines</span>
+        </p>
+        <a href="https://www.sublimemerge.com"><img src="../images/stage_lines.png" class="screenshot"  width="480" height="250"></a>
+        <p class="caption-sm">Staging Lines</p>
+        <h4>Reviewing your changes before committing</h4>
+        <p>
+        	You can review staged changes by scrolling to the <span class="menu">Staged files</span> section of the summary page.
+			Alternatively, you can select each staged file tab to view the file individually.
+        </p>
+        <h4>Committing the staged changes</h4>
+        <p>
+        	Begin by entering a commit message using the commit message input located at the top of the screen by default.
+			Once you've entered the commit message, select the <span class="menu">Commit</span> button.
+        </p>
+        <a href="https://www.sublimemerge.com"><img src="../images/commit_message.png" class="screenshot"  width="500" height="80"></a>
+        <p class="caption-sm">Commit Message Input</p>
+    </section>
+
+    <section class="wide">
+        <h2 id="editing_commits">Fixing and editing commits</h2>
+        <p>
+            You may make a new commit, only to realise you've made a mistake. Maybe the commit message isn't quite right, or you forgot to include a file in the commit.
+        </p>
+        <p>
+            Sublime Merge has first-class support for editing commits to handle these situations.
+        </p>
+        <h3>Editing a commit message</h3>
+        <p>
+            To edit a commits message, simply open the commit context menu and select <span class="menu">Edit Commit <img src="../images/right.svg" alt="▶"> Edit Commit Message…</span>
+        </p>
+        <p>
+            You can now begin typing a new commit message in the <span class="menu">Details</span> section. Once you are happy with the changes, select <span class="menu">Save</span>.
+        </p>
+
+        <h3>Editing commit contents</h3>
+        <p>
+            <h4>Editing the most recent commit</h4>
+            <p>
+                To edit the most recent commit, you can use the <span class="menu">amend</span> functionality.
+            </p>
+            <p>
+                Begin by editing the files you wish to change in your text editor, and then stage the changes using Sublime Merge.
+                Once the changes have been staged, select the dropdown button next to the commit button and select <span class="menu">Amend Previous Commit (--amend)</span>.
+            </p>
+            <p>
+                Git will now combine the staged changes with the previous commit.
+            </p>
+            <h4>Editing older commits</h4>
+            <p>
+                If you want to edit older commits, you can use the <span class="menu">Edit Commit Contents</span> functionality.
+            </p>
+            <p>
+                Locate the commit you want to edit, open the context menu, and select <span class="menu">Edit Commit <img src="../images/right.svg" alt="▶"> Edit Commit Contents…</span>
+                The selected commit will be undone, and you'll have a chance to update the commit contents. Once you're happy with the changes, re-commit them using the <span class="menu">Commit</span> button.
+            </p>
+            <p>
+                Select the <span class="menu">Continue rebase</span> button to complete the edit.
+                If you make a mistake and want to abort the edit, select the <span class="menu">Abort rebase</span> button.
+            </p>
+            <p>
+                <em>Note that editing older commits may produce merge conflicts which will need to be resolved. See <a href="getting_started.html#resolving_merge_conflicts">Resolving merge conflicts</a>.</em>
+            </p>
+        </p>
+
+        <h3>A note about editing commits</h3>
+        <p>
+            Editing a commit makes an entirely new commit and hides the old commit <em>(due to the way Git works)</em>. Additionally, editing a commit locally won't update any remote commits.
+            If the commit you are editing has already been pushed to the remote repository, proceed with caution.
+        </p>
+        <p>
+            If this is the case, you'll need to push the updated commit by performing a <span class="menu">push --force-with-lease</span> <em>(available in the advanced push menu)</em>.
+            This tells the remote repository to overwrite the remote commits with the updated commits <em>(provided nobody has updated the remote commits in the meantime).</em>
+        </p>
+
+    </section>
+
+    <section class="wide">
+    <h2 id="branches">Creating a branch</h2>
+    <h4>Creating a new branch via the command palette</h4>
+    <p>
+       Open the command palette <em>(see <a href="getting_started.html#command_palette">Using the command palette</a>)</em> and select <span class="menu">Create Branch…</span></li>
+    </p>
+    <h4>Creating a new branch via the commit graph</h4>
+    <p>
+        Open the context menu of an existing commit in the commit graph and select <span class="menu">Create branch at commit…</span></li>
+    </p>
+    <h4>Creating a local branch from a remote branch</h4>
+    <p>
+        Open the locations bar, and locate the <span class="menu">Remotes</span> section. Right click the remote branch and select <span class="menu">Create local branch from…</span>
+    </p>
+    </section>
+
+    <section class="wide">
+        <h2 id="pushing_and_pulling">Pushing and pulling</h2>
+        <p>
+            Pushing and pulling is required to share your work with others. This is done by pushing and pulling commits to and from a remote repository.
+        </p>
+        <a href="https://www.sublimemerge.com"><img src="../images/push_and_pull.png" class="screenshot"  width="200" height="80"></a>
+        <p class="caption-sm">Push and Pull Buttons</p>
+        <p>
+            You can perform a basic pushes and pulls using the buttons located in the top-right corner of the interface.
+            For advanced push and pull options, you can select the dropdown button located next to the main button.
+        </p>
+    </section>
+    <section class="wide">
+        <h2 id="merging">Merging branches</h2>
+        <h3>Merge via locations bar</h3>
+        <ol>
+            <li>Locate the branches list in the <span class="menu">Locations</span> bar</li>
+            <li>In the branches list, locate the branch you wish to merge into the currently checked out branch</li>
+            <li>Open the context menu for the given branch and select <span class="menu">Merge {branch1} into {branch2}…</span></li>
+        </ol>
+        <h3>Merge via commit graph</h3>
+        <ol>
+            <li>In the commit graph, locate the branch you wish to merge into the currently checked out branch</li>
+            <li>Open the context menu for the given branch and select <span class="menu">Merge {branch1} into {branch2}…</span></li>
+        </ol>
+        <h3>Merge via command palette</h3>
+        <ol>
+            <li>Open the command palette <em>(see <a href="getting_started.html#command_palette">Using the command palette</a>)</em></li>
+            <li>Search for and select <span class="menu">Merge branch…</span></li>
+            <li>Locate and select the branch you wish to merge into the currently checked out branch</li>
+        </ol>
+    </section>
+    <section class="wide">
+        <h2 id="resolving_merge_conflicts">Resolving merge conflicts</h2>
+        <p>
+            When merging changes to the same file, Git will try to automatically merge the changes. If it can't do this automatically, it marks the file as unmerged and you will have to manually resolve the merge conflict.
+        </p>
+        <p>
+            To resolve merge conflicts, you can use the merge tool available with Sublime Merge.
+        </p>
+        <h4>Steps to resolve a merge conflict</h4>
+        <p>
+            Locate the unmerged file in the <span class="menu">Pending changes</span> section.
+        </p>
+
+        <p>
+            In the unmerged file header, you'll see the <span class="menu">Resolve</span> button which can be selected to open the merge tool.
+        </p>
+        <h4>Merge Tool</h4>
+        <p>
+            The merge tool consists of 3 columns: <span class="menu">Ours</span> on the left, <span class="menu">Merged</span> in the middle, and <span class="menu">Theirs</span> on the right.
+        </p>
+        <a href="https://www.sublimemerge.com"><img src="../images/merge_tool.png" class="screenshot"  width="630" height="290"></a>
+        <p class="caption-sm">Merge Tool</p>
+        <p>
+            <span class="menu">Ours</span> and <span class="menu">Theirs</span> correspond to the conflicting files, while <span class="menu">Merged</span> corresponds to the resulting merged file.
+            <span class="menu">Base</span> can also be selected to display the merge base file.
+        </p>
+        <p>
+            Conflicting changes are displayed with a <span class="conflict">CONFLICT</span> marker. You can select which conflicting change to accept using the <img src="../images/right.svg" alt="▶"> or <img src="../images/left.svg" alt="◀"> button located adjacent to the conflicting hunk.
+        </p>
+        <p>
+            Once all conflicts have been resolved, you can select <span class="menu">Save and stage</span> to save the merged file and stage it. Alternatively, you can select <span class="menu">Cancel</span> to abandon the changes.
+        </p>
+    </section>
+
+    <section class="wide">
+        <h2 id="adding_remotes">Adding remotes</h2>
+        <p>
+            To push commits to a remote repository, you may need to add a new remote.
+        </p>
+        <h4>Adding remotes via command palette</h4>
+        <p>
+            Open the command palette <em>(see <a href="getting_started.html#command_palette">Using the command palette</a>)</em> and select <span class="menu">Add Remote…</span>.
+        </p>
+        <p>
+            You'll also find <span class="menu">Delete Remote…</span> and <span class="menu">Rename Remote…</span> commands within the command palette.
+        </p>
+    </section>
+
+    <section class="wide">
+        <h2 id="setting_upstream">Setting the upstream</h2>
+        <p>
+            The upstream branch tells Git which remote branch to associate with a local branch <em>(and is used to indicate where to push new commits)</em>.
+        </p>
+        <h4>Setting upstream branch via command palette</h4>
+        <ol>
+            <li>Open the command palette <em>(see <a href="getting_started.html#command_palette">Using the command palette</a>)</em> and select <span class="menu">Set Branch Upstream…</span></li>
+            <li>Locate the branch you wish to set the upstream for and select it</li>
+            <li>Locate the remote branch you wish to set as the upstream and select it</li>
+        </ol>
+        <h4>Setting upstream branch via locations bar</h4>
+        <ol>
+            <li>Locate the branches list in the <span class="menu">Locations</span> bar</li>
+            <li>In the branches list, locate the branch you wish to set the upstream for</li>
+            <li>Open the context menu and select <span class="menu">Set Upstream…</span></li>
+            <li>Locate the remote branch you wish to set as the upstream and select it</li>
+        </ol>
+    </section>
+
+    <section class="wide">
+        <h2 id="authentication">Remote authentication</h2>
+        <p>
+            When making changes to a remote repository, it's likely you'll need to provide authentication.
+        </p>
+        <p>
+            Git supports two connection protocols when accessing a remote repository: <code>HTTPS</code> and <code>SSH</code>.
+            Each of these protocols requires a different type of authentication, outlined below.
+        </p>
+        <h3>Authenticating via HTTPS</h3>
+        <p>
+            When performing an action that requires authentication on a repository using HTTPS connections, an authentication dialog will be displayed.
+            Enter the username and password used to authenticate with the remote repository, then select the <span class="menu">OK</span> button.
+        </p>
+
+        <p>
+            You may not want to enter your credentials every time you perform a push or pull. In this case, you can use Git's built-in password manager to cache the credentials for a certain period of time.
+            To do this, open Sublime Merge and navigate to <span class="menu">Tools <img src="../images/right.svg" alt="▶"> Password Caching</span>. You can request that Git stores the credentials for up to a week.
+
+        </p>
+        <p>
+            Note that this is only available on Linux and MacOS. For Windows users, you can use Git Credential Manager for Windows. <em>(See <a href="https://github.com/Microsoft/Git-Credential-Manager-for-Windows">https://github.com/Microsoft/Git-Credential-Manager-for-Windows</a>)</em>
+        </p>
+        <h3>Authenticating via SSH</h3>
+        <p>
+            For SSH authentication, Git will try to use the default ssh key stored at <tt>~/.ssh/</tt> to authenticate.
+            You may be asked to unlock your key, in which case you can enter the passphrase associated with the SSH key to continue.
+        </p>
+
+        <p>
+            Persistent storage of SSH credentials depends on the operating system. For most Linux distributions, you can automate unlocking your SSH key on start-up.
+            For MacOS, you can add your SSH credentials to the system keychain. To do this, run <tt>ssh-add -K PATH_TO_KEY</tt> from the console.
+            For Windows, you can use plink / pageant to connect and store SSH credentials.
+        </p>
+
+        <h4>Windows: setting up PuTTY / plink / pageant with Sublime Merge</h4>
+        <p>
+            This guide assumes you have existing SSH keys you can import into PuTTY. If not, please read <a href="https://git-scm.com/book/en/v2/Git-on-the-Server-Generating-Your-SSH-Public-Key">this guide first</a>.
+        </p>
+        <ol>
+            <li>Begin by downloading and installing PuTTY <a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">here</a></li>
+            <li>
+                Once installed, open PuTTYGen and select <span class="menu">Conversions <img src="../images/right.svg" alt="▶"> Import Key</span>.
+            </li>
+            <li>
+                Select your existing RSA key (likely found at <tt>~/.ssh/id_rsa.pub</tt>)
+            </li>
+            <li>
+                Once imported, save a copy of the private key to the same folder
+            </li>
+        </ol>
+        <p>
+            Now that the key is saved, you can enable plink/PuTTY in Sublime Merge via the preferences. 
+        </p>
+        <ol>
+            <li>
+                Open Sublime Merge and select <span class="menu">Preferences <img src="../images/right.svg" alt="▶"> Preferences…</span>
+            </li>
+            <li>
+                Navigate to <span class="menu">Advanced</span> in the preferences dialog.
+            </li>
+            <li>
+                Navigate to SSH Path, and set this to the plink system path (likely <tt>C:\Program Files (x86)\PuTTY\plink.exe</tt>).
+            </li>
+        </ol>
+        <p>
+            Now that Sublime Merge is using plink, the last optional step is to start pageant and load in your credentials. This ensures you don't have to enter your SSH credentials every time you perform a remote operation.
+        </p>
+        <ol>
+            <li>
+                Start the pageant executable
+            </li>
+            <li>
+                Once started, you'll find the pageant icon in the system tray. Right click the icon and select <span class="menu">Add Key</span>.
+            </li>
+            <li>
+                Navigate to and select the private key you saved earlier
+            </li>
+        </ol>
+        <em>
+            It's worth noting that you'll have to start pageant every time you start your Windows session if you want to cache the SSH credentials. It's possible to add pageant to your Windows start-up folder, though this isn't covered here.
+        </em>
+    </section>
+    </div>
+
+    </section>
+    </main>
+<script>
+if (!window.res)
+{
+    scale = 1
+    res = function()
+    {
+        scale = window.devicePixelRatio >= 1.3 ? 2 : 1
+        return scale == 2 ? '@2x' : ''
+    }
+}
+
+function high_dpi_31_ss()
+{
+    var ss = document.getElementsByClassName("screenshot");
+    for(var i = 0; i < ss.length; i++)
+    {
+        ss.item(i).src = ss.item(i).src.replace(/(@2x)?\.png/, res() + '.png');
+    }
+}
+high_dpi_31_ss()
+if (window.matchMedia)
+{
+    window.matchMedia('screen and (-webkit-min-device-pixel-ratio: 1.3), ' +
+        'only screen and (-o-min-device-pixel-ratio: 13/10), ' +
+        'only screen and (min-resolution: 120dpi)').addListener(function(e)
+    {
+        high_dpi_31_ss()
+    })
+}
+</script>
+    <footer>
+        <section class="footer_content">
+                <div class="footer_start">
+                    <p>© <a href="https://www.sublimehq.com">Sublime HQ Pty Ltd</a></p>
+                    <p>Woollahra, Sydney.</p>
+                </div>
+                <div class="footer_end">
+                    <p>
+                        <div class="twitter_follow">
+                            <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/sublimehq?ref_src=twsrc%5Etfw">
+                                <i></i>
+                            Follow @sublimehq</a>
+                        </div>
+                    </p>
+                </div>
+        </section>
+    </footer>
+    <!--[if lt IE 9]>
+    <script>
+        var logo_img = byid('logo').getElementsByTagName('IMG')[0]
+        logo_img.src = logo_img.src.replace('.svg', '.png')
+    </script>
+    <![endif]-->
+</body>
+</html>

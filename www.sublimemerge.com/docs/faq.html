@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Frequently Asked Questions – Sublime Merge Documentation</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=480, user-scalable=yes">
+    <link rel="stylesheet" type="text/css" href="../merge_v2.css@d=201027.css">
+    <link rel="icon" href="../favicon.ico">
+    <link rel="icon" size="64x64" href="../favicon.ico">
+    <script type="text/javascript">
+    var plat = 'windows'
+    if (/Mac OS X/.test(navigator.userAgent))
+        plat = 'osx'
+    else if (/Linux|FreeBSD/.test(navigator.userAgent))
+        plat = 'linux'
+    var arch = /WOW64|Win64|x86_64/.test(navigator.userAgent) ? '64' : '32'
+    document.documentElement.className += ' plat_' + plat + ' arch_' + arch
+    function byid(x)
+    {
+        return document.getElementById(x)
+    }
+    var scale = 1
+    function res()
+    {
+        scale = window.devicePixelRatio >= 1.3 ? 2 : 1
+        return scale == 2 ? '@2x' : ''
+    }
+    </script>
+    <!--[if lt IE 9]>
+    <script>
+        var els = ['header', 'nav', 'section', 'main', 'article', 'aside', 'footer']
+        for (var i = 0; i < els.length; ++i)
+            document.createElement(els[i]);
+    </script>
+    <style>
+        header, nav, section, main, article, aside, footer {
+            display: block;
+        }
+    </style>
+    <![endif]-->
+</head>
+<body class="docs">
+    <header>
+        <section>
+            <a id="logo" href="https://www.sublimemerge.com/">
+                <img src="../images/logo.svg" alt="Sublime Merge">
+            </a>
+            <nav>
+                <a href="https://www.sublimemerge.com/download">Download</a>
+                <a href="https://www.sublimehq.com/store/merge">Buy</a>
+                <a href="https://www.sublimemerge.com/support">Support</a>
+                <span class="vr"></span>
+                <a href="https://www.sublimetext.com/blog/">News</a>
+                <a href="https://forum.sublimetext.com">Forum</a>
+            </nav>
+        </section>
+    </header>
+    <main>
+    <section>
+    <script src="prism.js"></script>
+
+    <h1><span>
+        <a href="index.html">Documentation</a>
+        FAQ
+    </span></h1>
+
+    <div class="primary">
+    <section>
+        <ul>
+            <li><a href="faq.html#what_is">What is Git / a Git Client / Sublime Merge?</a></li>
+            <li><a href="faq.html#getting_started">How do I use Sublime Merge?</a></li>
+            <li><a href="faq.html#staging_lines">Can I stage individual lines with Sublime Merge?</a></li>
+            <li><a href="faq.html#editing_commits">Can I edit an existing commit?</a></li>
+            <li><a href="faq.html#ssh">How do I authenticate with a remote repository?</a></li>
+            <li><a href="faq.html#diffing_between_commits">Can I diff between two commits?</a></li>
+            <li><a href="faq.html#custom_keybindings">Can I customize the keybindings in Sublime Merge?</a></li>
+            <li><a href="faq.html#custom_themes">Can I customize the theme in Sublime Merge?</a></li>
+            <li><a href="faq.html#custom_git_commands">Can I add custom Git commands to Sublime Merge?</a></li>
+            <li><a href="faq.html#can_i_do_x">Can I do X in Sublime Merge?</a></li>
+            <li><a href="faq.html#issue_tracker">Can I share feedback with the Sublime Merge team?</a></li>
+        </ul>
+        <h2 id="what_is">What is Git / a Git Client / Sublime Merge?</h2>
+        <p>
+
+            Git is a distributed version control system - a system used to distribute and track source code changes.
+        </p>
+        <p>
+            Git was originally written as a command line tool, though there are tools available to provide Git with a graphical user interface (Graphical Git Clients).
+        </p>
+        <p>
+            Sublime Merge is a Graphical Git Client from the creators of Sublime Text.
+            It is powered by the same performant cross-platform GUI toolkit and syntax highlighting engine used in Sublime Text.
+            Sublime Merge wraps around the core Git functionality, so when you're using Sublime Merge, you're using Git.
+        </p>
+        <h2 id="getting_started">How do I use Sublime Merge?</h2>
+        <p>
+            See <a href="getting_started.html">Getting started with Sublime Merge</a>
+        </p>
+    </section>
+
+    <section class="wide">
+        <h2 id="staging_lines">Can I stage individual lines with Sublime Merge?</h2>
+        <p>Yes!</p>
+        <p>
+            In fact most file-based commands in Sublime Merge also support line selections <em>(see <a href="getting_started.html#committing">Making a commit</a>)</em>
+        </p>
+    </section>
+
+    <section class="wide">
+        <h2 id="editing_commits">Can I edit an existing commit?</h2>
+        <p>Yes!</p>
+        <p>
+            Sublime Merge supports many commit editing operations.
+        </p>
+        <p>
+            Locate the commit you wish to edit in the commit graph, open the context menu, and select <span class="menu">Edit Commit</span>
+        </p>
+    </section>
+
+    <section class="wide">
+        <h2 id="ssh">How do I authenticate with a remote repository?</h2>
+        <p>
+            See <a href="getting_started.html#authentication">Authentication and Sublime Merge</a>
+        </p>
+    </section>
+
+    <section class="wide">
+        <h2 id="diffing_between_commits">Can I diff between two commits?</h2>
+        <p>Yes!</p>
+        <p>
+            Simply select the two commits you wish to diff between in the commit graph, and the diff will appear in the commit details panel.
+        </p>
+    </section>
+
+    <section class="wide">
+        <h2 id="custom_keybindings">Can I customize the keybindings in Sublime Merge?</h2>
+        <p>
+            Yes! See <a href="key_bindings.html#user_bindings">User Bindings</a>
+        </p>
+    </section>
+    <section class="wide">
+        <h2 id="custom_themes">Can I customize the theme in Sublime Merge?</h2>
+        <p>
+            Yes! See <a href="themes.html#customization">Theme Customization</a>
+        </p>
+    </section>
+    <section class="wide">
+        <h2 id="custom_git_commands">Can I add custom Git commands to Sublime Merge?</h2>
+        Yes! See <a href="custom_commands.html">Custom Commands</a>
+    </section>
+    <section class="wide">
+        <h2 id="can_i_do_x">Can I do X in Sublime Merge?</h2>
+        <p>
+            Sublime Merge has a lot of functionality, so your best bet is to to check the command palette or context menus. <em>(see <a href="getting_started.html#command_palette">Using the command palette</a>)</em>
+        </p>
+        <p>
+            If you can't find what you're looking for, you can ask on our <a href="https://www.sublimehq.com/forum"> official forum</a> or <a href="https://github.com/sublimehq/sublime_merge/issues/new/choose"> share feedback with the team</a>.
+        </p>
+    </section>
+    <section class="wide">
+        <h2 id="issue_tracker">Can I share feedback with the Sublime Merge team?</h2>
+        <p>
+            We love our community sharing ideas and feature requests with us.
+        </p>
+        <p>
+            The best way to do this is through our <a href="https://github.com/sublimehq/sublime_merge/issues/new/choose">official issue tracker</a>.
+        </p>
+    </section>
+    </div>
+
+    </section>
+    </main>
+    <footer>
+        <section class="footer_content">
+                <div class="footer_start">
+                    <p>© <a href="https://www.sublimehq.com">Sublime HQ Pty Ltd</a></p>
+                    <p>Woollahra, Sydney.</p>
+                </div>
+                <div class="footer_end">
+                    <p>
+                        <div class="twitter_follow">
+                            <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/sublimehq?ref_src=twsrc%5Etfw">
+                                <i></i>
+                            Follow @sublimehq</a>
+                        </div>
+                    </p>
+                </div>
+        </section>
+    </footer>
+    <!--[if lt IE 9]>
+    <script>
+        var logo_img = byid('logo').getElementsByTagName('IMG')[0]
+        logo_img.src = logo_img.src.replace('.svg', '.png')
+    </script>
+    <![endif]-->
+</body>
+</html>
