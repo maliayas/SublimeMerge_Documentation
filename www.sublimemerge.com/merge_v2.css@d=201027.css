@@ -1379,10 +1379,10 @@ body.docs h1.pinned > span > nav::before {
 }
 @media only screen and (max-width: 1240px) {
     body.docs h1.pinned > span {
-        left: calc(((100vw - (100vw - 100%) - 1140px) / 2) + 10px);
+        left: calc(((100vw - (100vw - 100%) - 1140px) / 2) +10px);
     }
     div.versions.enabled.pinned {
-        right: calc(((100vw - (100vw - 100%) - 1140px) / 2) + 20px);
+        right: calc(((100vw - (100vw - 100%) - 1140px) / 2) +20px);
     }
 }
 @media only screen and (max-width: 1240px) {
