@@ -232,6 +232,7 @@ html.hq main > section {
 }
 div.primary {
     float: left;
+    max-width: 100%;
 }
 div.primary > section {
     max-width: 800px;
