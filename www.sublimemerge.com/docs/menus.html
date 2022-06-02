@@ -2,10 +2,11 @@
 <html>
 <head>
     <title>Menus – Sublime Merge Documentation</title>
+<link rel="stylesheet" type="text/css" href="docs.css@v=818bdbe0c700b91b21e79106a24c93a8.css">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=480, user-scalable=yes">
-    <link rel="stylesheet" type="text/css" href="../merge_v2.css@v=839922e840c7a2c4ff1b2d22f7011796.css">
+    <link rel="stylesheet" type="text/css" href="../merge_v2.css@v=eef402a5af88aad6f6d2d6dced6d0337.css">
     <link rel="icon" href="../favicon.ico">
     <link rel="icon" size="64x64" href="../favicon.ico">
     <script type="text/javascript">
@@ -163,15 +164,15 @@
     </section>
 
     <section>
-        <h2 id="available_menus">Available Menus</h2>
+        <h2 id="available_menus">Available Menus and Variables</h2>
 
         <p>
             Sublime Merge has 14 menus that may be customized. Menus
             have context variables that may be used in in the
-            <code>"caption"</code> and <code>"args"</code> fields. The
-            following context variables are available in all menus:
+            <code>"caption"</code> and <code>"args"</code> fields.
         </p>
-
+        <h4>Available Variables</h4>
+        <p>The following context variables are available in all menus:</p>
         <dl class="enum properties">
             <dt>$working_dir</dt>
             <dd>The path to the repo working dir</dd>
@@ -187,6 +188,7 @@
             <dd>The branch name or <code>HEAD</code>, when in detached head state</dd>
         </dl>
 
+        <h4>Available Menus</h4>
         <p>
             The menus that support customization are:
         </p>
@@ -205,10 +207,31 @@
             <dd>
                 Menu for down arrow button to the right of the Commit button
             </dd>
+            <dt>Branch Section.sublime-menu</dt>
+            <dd>
+                <p>
+                    Context menu for the <span class="menu">Branches</span> header in the Locations tab
+                </p>
+            </dd>
+            <dt>Branch Folder.sublime-menu</dt>
+            <dd>
+                <p>
+                    Context menu for branch folders in the Locations tab
+                </p>
+                <p>
+                    <em>Context variables:</em>
+                </p>
+                <dl class="properties">
+                    <dt>$branch</dt>
+                    <dd>The branch folder name</dd>
+                    <dt>$ref</dt>
+                    <dd>The partial branch folder ref</dd>
+                </dl>
+            </dd>
             <dt>Branch.sublime-menu</dt>
             <dd>
                 <p>
-                    Context menu for branches in the Location Bar.
+                    Context menu for branches in the Locations and Commits tab
                 </p>
                 <p>
                     <em>Context variables:</em>
@@ -223,7 +246,7 @@
             <dt>Commit.sublime-menu</dt>
             <dd>
                 <p>
-                    Context menu for commits in the Commit List
+                    Context menu for commits in the Commits tab
                 </p>
                 <p>
                     <em>Context variables:</em>
@@ -260,7 +283,7 @@
             <dd>
                 <p>
                     Menu for <code>...</code> button to the right edge of a
-                    file header.
+                    file header
                 </p>
                 <p>
                     <em>Context variables:</em>
@@ -270,10 +293,98 @@
                     <dd>Repo-relative file path</dd>
                 </dl>
             </dd>
+            <dt>Hunk.sublime-menu</dt>
+            <dd>
+                <p>
+                    Menu for <code>...</code> button to the right edge of a
+                    hunk header
+                </p>
+                <p>
+                    <em>Context variables:</em>
+                </p>
+                <dl class="properties">
+                    <dt>$path</dt>
+                    <dd>Repo-relative file path for the hunk</dd>
+                </dl>
+            </dd>
+            <dt>Unmerged File.sublime-menu</dt>
+            <dd>
+                <p>
+                    Context menu for an unmerged file in the <span class="menu">Files</span> tab
+                </p>
+                <dl class="properties">
+                    <dt>$path</dt>
+                    <dd>Repo-relative file path</dd>
+                </dl>
+            </dd>
+            <dt>Untracked File.sublime-menu</dt>
+            <dd>
+                <p>
+                    Context menu for an untracked in the <span class="menu">Files</span> tab
+                </p>
+                <dl class="properties">
+                    <dt>$path</dt>
+                    <dd>Repo-relative file path</dd>
+                </dl>
+            </dd>
+            <dt>Modified File.sublime-menu</dt>
+            <dd>
+                <p>
+                    Context menu for a modified file in the <span class="menu">Files</span> tab
+                </p>
+                <dl class="properties">
+                    <dt>$path</dt>
+                    <dd>Repo-relative file path</dd>
+                </dl>
+            </dd>
+            <dt>Index File.sublime-menu</dt>
+            <dd>
+                <p>
+                    Context menu for a staged file in the <span class="menu">Files</span> tab
+                </p>
+                <dl class="properties">
+                    <dt>$path</dt>
+                    <dd>Repo-relative file path</dd>
+                </dl>
+            </dd>
+            <dt>Remote Section.sublime-menu</dt>
+            <dd>
+                <p>
+                    Context menu for the <span class="menu">Remotes</span> header in the Locations tab
+                </p>
+            </dd>
+            <dt>Remote.sublime-menu</dt>
+            <dd>
+                <p>
+                    Context menu for remotes in the Locations tab
+                </p>
+                <p>
+                    <em>Context variables:</em>
+                </p>
+                <dl class="properties">
+                    <dt>$remote</dt>
+                    <dd>The remote name</dd>
+                </dl>
+            </dd>
+            <dt>Remote Branch Folder.sublime-menu</dt>
+            <dd>
+                <p>
+                    Context menu for remote branch folders in the Locations tab
+                </p>
+                <p>
+                    <em>Context variables:</em>
+                </p>
+                <dl class="properties">
+                    <dt>$branch</dt>
+                    <dd>The remote branch folder name</dd>
+                    <dt>$ref</dt>
+                    <dd>The partial remote branch folder ref</dd>
+                </dl>
+            </dd>
             <dt>Remote Branch.sublime-menu</dt>
             <dd>
                 <p>
-                    Context menu for remote branches in the Location Bar
+                    Context menu for remote branches in the Locations and Commits tab
                 </p>
                 <p>
                     <em>Context variables:</em>
@@ -285,24 +396,16 @@
                     <dd>The remote branch ref</dd>
                 </dl>
             </dd>
-            <dt>Remote.sublime-menu</dt>
+            <dt>Stash Section.sublime-menu</dt>
             <dd>
                 <p>
-                    Context menu for remotes in the Location Bar
+                    Context menu for the <span class="menu">Stashes</span> header in the Locations tab
                 </p>
-                <p>
-                    <em>Context variables:</em>
-                </p>
-                <dl class="properties">
-                    <dt>$remote</dt>
-                    <dd>The remote name</dd>
-                </dl>
             </dd>
             <dt>Stash.sublime-menu</dt>
             <dd>
                 <p>
-                    Additional context menu entries for stashes in the Commit
-                    List
+                    Context menu for stashes in the Locations and Commits tab
                 </p>
                 <p>
                     <em>Context variables:</em>
@@ -315,12 +418,12 @@
             <dt>Submodule Section.sublime-menu</dt>
             <dd>
                 Menu for gear icon to the right of the Submodules header in the
-                Location Bar
+                Locations tab
             </dd>
             <dt>Submodule.sublime-menu</dt>
             <dd>
                 <p>
-                    Context menu for submodules in the Location Bar
+                    Context menu for submodules in the Locations tab
                 </p>
                 <p>
                     <em>Context variables:</em>
@@ -332,10 +435,16 @@
                     <dd>The submodule path</dd>
                 </dl>
             </dd>
+            <dt>Tag Section.sublime-menu</dt>
+             <dd>
+                <p>
+                    Context menu for the <span class="menu">Tags</span> header in the Locations tab
+                </p>
+            </dd>
             <dt>Tag.sublime-menu</dt>
             <dd>
                 <p>
-                    Context menu for tags in the Location Bar
+                    Context menu for tags in the Locations tab
                 </p>
                 <p>
                     <em>Context variables:</em>
@@ -345,6 +454,27 @@
                     <dd>The tag name</dd>
                     <dt>$ref</dt>
                     <dd>The tag ref</dd>
+                </dl>
+            </dd>
+            <dt>Remote Tag.sublime-menu</dt>
+            <dd>
+                <p>
+                    Context menu for tags dedicated to remote commands.
+                    <em>This menu is enabled for each remote, regardless
+                    of if the tag is present on the remote.</em>
+                </p>
+                <p>
+                    <em>Context variables:</em>
+                </p>
+                <dl class="properties">
+                    <dt>$tag_name</dt>
+                    <dd>The tag name</dd>
+                    <dt>$ref</dt>
+                    <dd>The tag ref</dd>
+                    <dl class="properties">
+                    <dt>$remote</dt>
+                    <dd>The remote name</dd>
+                </dl>
                 </dl>
             </dd>
             <dt>Widget Context.sublime-menu</dt>
@@ -405,10 +535,20 @@
             appropriately-named file in their
             <span class="file">Packages/User/</span> directory.
         </p>
-
         <p>
-            For example, to customize the context menu for remotes in
-            the Location Bar, create a file named
+            <em>
+                If you're unsure where the <span class="file">Packages/User/
+                </span> directory is, you can easily access it in Sublime Merge
+                via
+                <span class="menu">Preferences
+                <img src="../images/right.svg" alt="▶"> Browse Packages…</span>
+            </em>
+        </p>
+
+        <h3>Example</h3>
+        <p>
+            To customize the context menu for remotes in
+            the Locations tab, create a file named
             <span class="file">Packages/User/Remote.sublime-menu</span>.
             Adding the following would create an entry that will prune stale
             refs.
