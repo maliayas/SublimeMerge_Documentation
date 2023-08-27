@@ -241,10 +241,10 @@ dl.field-list > dt {
 }
 @media only screen and (max-width: 1240px) {
     h1.pinned > span {
-        left: calc(((100vw - (100vw - 100%) - 1140px) / 2) +10px);
+        left: calc(((100vw - (100vw - 100%) - 1140px) / 2) + 10px);
     }
     h1.pinned div.versions {
-        right: calc(((100vw - (100vw - 100%) - 1140px) / 2) +20px);
+        right: calc(((100vw - (100vw - 100%) - 1140px) / 2) + 20px);
     }
 }
 @media only screen and (max-width: 1240px) {
