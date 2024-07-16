@@ -79,6 +79,8 @@
         <ul>
             <li><a href="custom_commands.html#example">Basic Example</a></li>
             <li><a href="custom_commands.html#selectors">Using Selectors</a></li>
+            <li><a href="custom_commands.html#available_selectors">Available Selectors</a></li>
+            <li><a href="custom_commands.html#menu_files">Using Selectors in Menu Files</a></li>
         </ul>
     </section>
 
@@ -86,13 +88,19 @@
         <h2 id="example">Basic Example</h2>
 
         <p>
-            <em>The following is an example of a basic custom <code>git</code> command that runs <code>git rebase -i master</code>.</em>
+            <em>The following is an example of a basic custom <code>git</code> command that runs <code>git rebase -i main</code>.</em>
         </p>
 
         <pre><code class="language-js">{
-    "caption": "Interactive rebase onto master",
+    "caption": "Interactive rebase onto main",
     "command": "git",
-    "args": {"argv": ["rebase", "-i", "master"]}
+    "args": {
+        "argv": [
+            "rebase",
+            "-i",
+            "main"
+        ]
+    }
 }</code></pre>
 
         <p>You can see that the args are specified in the <code>"argv"</code> array, each separated by a comma.</p>
@@ -102,10 +110,10 @@
         <h2 id="selectors">Using Selectors</h2>
 
         <p>
-            The limitation with the example shown above is that <code>master</code> is hardcoded. What if we want to pick a branch to rebase onto?
+            The limitation with the example shown above is that the branch name <code>main</code> is hardcoded. What if we want to pick another branch to rebase onto?
         </p>
         <p>
-            This is where selectors come in handy. Selectors allow us to select a ref at runtime, rather than hard-coding a value.
+            This is where selectors come in handy. Selectors allow us to select arguments when the command is run, rather than hard-coding them into the command.
         </p>
 
         <h3 id="available_selectors">Available Selectors</h3>
@@ -115,8 +123,10 @@
         </p>
 
         <dl class="enum properties">
+            <dt>$select_ref</dt>
+            <dd>Allows the user to select a ref (either a local branch, a remote branch, or a tag)</dd>
             <dt>$select_branch</dt>
-            <dd>Allows the user to select a branch (either local or remote)</dd>
+            <dd>Allows the user to select a branch (either a local or remote branch)</dd>
             <dt>$select_local_branch</dt>
             <dd>Allows the user to select a local branch</dd>
             <dt>$select_remote_branch</dt>
@@ -137,9 +147,39 @@
         <pre><code class="language-js">{
     "caption": "Interactive rebase…",
     "command": "git",
-    "args": {"argv": ["rebase", "-i", "$select_branch"]}
+    "args": {
+        "argv": [
+            "rebase",
+            "-i",
+            "$select_branch"
+        ]
+    }
 }</code></pre>
         <p>Now the user will be prompted to select a branch to rebase onto.</p>
+        <h3 id="menu_files">Using Selectors in Menu Files</h3>
+        <p>
+            Note that selectors rely on the command palette to collect input.
+            Any commands placed in the <tt>Default.sublime-commands</tt> will be visible in the command palette.
+            This is not the case for context menus, which run commands directly.
+        </p>
+        <p>
+            For any custom commands defined in a context menu file such as <tt>Branch.sublime-menu</tt>, you'll need to wrap the custom command in a <tt>show_command_palette</tt> command to collect input.
+            As an example:
+        </p>
+        <pre><code class="language-js">{
+    "caption": "Interactive rebase…",
+    "command": "show_command_palette",
+    "args": {
+        "command": "git",
+        "args": {
+            "argv": [
+                "rebase",
+                "-i",
+                "$select_branch"
+            ]
+        }
+    }
+}</code></pre>
     </section>
     </div>
 
